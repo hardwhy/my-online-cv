@@ -72,7 +72,7 @@ export function Layout() {
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/80">
         <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8" aria-label="Main navigation">
           <NavLink to="/" className="group flex items-center gap-3">
-            <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-slate-950 font-display text-sm font-bold text-white shadow-soft ring-2 ring-white/80 transition group-hover:-translate-y-0.5 dark:bg-white dark:text-slate-950 dark:ring-slate-800">
+            <span className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-950 font-display text-sm font-bold text-white shadow-soft ring-2 ring-slate-200 transition group-hover:-translate-y-0.5 dark:bg-white dark:text-slate-950 dark:ring-slate-700">
               <AnimatePresence mode="wait" initial={false}>
                 {shouldShowProfilePhoto ? (
                   <motion.img
@@ -83,7 +83,7 @@ export function Layout() {
                     animate={{ opacity: 1, scale: 1, rotate: 0 }}
                     exit={{ opacity: 0, scale: 0.82, rotate: 8 }}
                     transition={{ duration: 0.22, ease: 'easeOut' }}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full scale-150 rounded-full object-cover object-center"
                   />
                 ) : (
                   <motion.span

@@ -52,7 +52,10 @@ This project is ready for GitHub Pages hosting.
 1. Push the repository to GitHub.
 2. In GitHub, open `Settings` -> `Pages`.
 3. Set `Build and deployment` source to `GitHub Actions`.
-4. Push to the `main` branch, or run the `Deploy to GitHub Pages` workflow manually from the `Actions` tab.
+4. Save the setting once before running the deployment workflow.
+5. Push to the `main` branch, or run the `Deploy to GitHub Pages` workflow manually from the `Actions` tab.
+
+GitHub must have Pages enabled manually for the repository. If Pages is not enabled, `actions/deploy-pages` can fail with `Not Found` or `Resource not accessible by integration` even when the app build succeeds.
 
 The app uses `HashRouter`, so routes are GitHub Pages-safe and will look like:
 
