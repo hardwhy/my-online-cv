@@ -11,7 +11,6 @@ export const profile: Profile = {
   resumeUrl: import.meta.env.VITE_CV_URL,
   socials: [
     { label: 'LinkedIn', href: 'https://id.linkedin.com/in/ayi-hardiyanto-986b88139' },
-    { label: 'Email', href: 'mailto:ayihardyan@gmail.com' },
   ],
   stats: [
     { label: 'Years of experience', value: '8+' },
