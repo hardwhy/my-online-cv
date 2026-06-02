@@ -6,12 +6,12 @@ export const profile: Profile = {
   summary:
     'Software Engineer at DKATALIS with experience building web and mobile applications using Flutter, TypeScript, React, Redux, and Firebase. I focus on modular architecture, responsive interfaces, reliable source control practices, and scalable product delivery.',
   location: 'Banten, Indonesia',
-  email: 'ayi.hardiyanto@example.com',
+  email: 'ayihardyan@gmail.com',
   photo: '/assets/ayi-hardiyanto-profile.png',
   resumeUrl: import.meta.env.VITE_CV_URL,
   socials: [
     { label: 'LinkedIn', href: 'https://id.linkedin.com/in/ayi-hardiyanto-986b88139' },
-    { label: 'Email', href: 'mailto:ayi.hardiyanto@example.com' },
+    { label: 'Email', href: 'mailto:ayihardyan@gmail.com' },
   ],
   stats: [
     { label: 'Years of experience', value: '8+' },
