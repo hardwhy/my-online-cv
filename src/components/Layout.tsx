@@ -1,4 +1,6 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { Suspense, useEffect, useMemo, useState } from 'react';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { profile } from '../data/profile';
 import { useTheme } from '../hooks/useTheme';
 import { Analytics } from './Analytics';
@@ -15,8 +17,46 @@ const navItems = [
   { label: 'Contact', to: '/contact' },
 ];
 
+function ContentLoader() {
+  return (
+    <div className="flex min-h-[60vh] items-center justify-center px-4">
+      <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-brand-500 dark:border-slate-800 dark:border-t-brand-300" aria-label="Loading page" />
+    </div>
+  );
+}
+
 export function Layout() {
   const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
+  const [isHeroPhotoVisible, setIsHeroPhotoVisible] = useState(false);
+  const initials = useMemo(
+    () =>
+      profile.fullName
+        .split(' ')
+        .map((part) => part[0])
+        .join('')
+        .slice(0, 2),
+    [],
+  );
+
+  useEffect(() => {
+    const heroPhoto = document.querySelector('[data-profile-hero]');
+    if (!heroPhoto) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHeroPhotoVisible(entry.isIntersecting);
+      },
+      { threshold: 0.15 },
+    );
+
+    observer.observe(heroPhoto);
+    return () => observer.disconnect();
+  }, [location.pathname]);
+
+  const shouldShowProfilePhoto = location.pathname !== '/' || !isHeroPhotoVisible;
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100">
@@ -30,12 +70,31 @@ export function Layout() {
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/80">
         <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8" aria-label="Main navigation">
           <NavLink to="/" className="group flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 font-display text-sm font-bold text-white shadow-soft transition group-hover:-translate-y-0.5 dark:bg-white dark:text-slate-950">
-              {profile.fullName
-                .split(' ')
-                .map((part) => part[0])
-                .join('')
-                .slice(0, 2)}
+            <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-slate-950 font-display text-sm font-bold text-white shadow-soft ring-2 ring-white/80 transition group-hover:-translate-y-0.5 dark:bg-white dark:text-slate-950 dark:ring-slate-800">
+              <AnimatePresence mode="wait" initial={false}>
+                {shouldShowProfilePhoto ? (
+                  <motion.img
+                    key="profile-photo"
+                    src={profile.photo}
+                    alt={profile.fullName}
+                    initial={{ opacity: 0, scale: 0.82, rotate: -8 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    exit={{ opacity: 0, scale: 0.82, rotate: 8 }}
+                    transition={{ duration: 0.22, ease: 'easeOut' }}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                ) : (
+                  <motion.span
+                    key="profile-initials"
+                    initial={{ opacity: 0, scale: 0.82, rotate: 8 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    exit={{ opacity: 0, scale: 0.82, rotate: -8 }}
+                    transition={{ duration: 0.22, ease: 'easeOut' }}
+                  >
+                    {initials}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </span>
             <span>
               <span className="block font-display text-base font-bold">{profile.fullName}</span>
@@ -86,7 +145,9 @@ export function Layout() {
       </header>
 
       <main id="main">
-        <Outlet />
+        <Suspense fallback={<ContentLoader />}>
+          <Outlet />
+        </Suspense>
       </main>
 
       <footer className="border-t border-slate-200 bg-white py-8 dark:border-slate-800 dark:bg-slate-950">

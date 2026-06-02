@@ -42,7 +42,7 @@ export default function Home() {
             </div>
           </div>
 
-          <motion.div initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.18 }} className="relative">
+          <motion.div data-profile-hero initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.18 }} className="relative">
             <div className="absolute -inset-6 rounded-[3rem] bg-gradient-to-br from-brand-300/40 to-slate-900/10 blur-3xl dark:to-brand-800/40" />
             <img src={profile.photo} alt={profile.fullName} className="relative mx-auto w-full max-w-md rounded-[2.5rem] border border-white/70 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900" />
           </motion.div>
