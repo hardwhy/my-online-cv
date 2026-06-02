@@ -45,6 +45,23 @@ Run linting:
 npm run lint
 ```
 
+## Deploy To GitHub Pages
+
+This project is ready for GitHub Pages hosting.
+
+1. Push the repository to GitHub.
+2. In GitHub, open `Settings` -> `Pages`.
+3. Set `Build and deployment` source to `GitHub Actions`.
+4. Push to the `main` branch, or run the `Deploy to GitHub Pages` workflow manually from the `Actions` tab.
+
+The app uses `HashRouter`, so routes are GitHub Pages-safe and will look like:
+
+```text
+https://<username>.github.io/<repository-name>/#/projects
+```
+
+The Vite build uses relative asset paths, so it works whether the repository is deployed as a user site or a project site.
+
 ## Project Structure
 
 ```text
