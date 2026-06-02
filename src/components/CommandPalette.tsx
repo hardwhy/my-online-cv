@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 type CommandPaletteProps = {
@@ -31,26 +32,22 @@ export function CommandPalette({ navItems }: CommandPaletteProps) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const runCommand = (to: string) => {
     navigate(to);
     setIsOpen(false);
     setQuery('');
   };
 
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className="hidden h-10 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-500 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-brand-400 dark:hover:text-brand-200 dark:focus:ring-offset-slate-950 sm:inline-flex"
-        aria-label="Open command palette"
-      >
-        <span>Search</span>
-        <kbd className="rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-500 dark:bg-slate-800 dark:text-slate-400">Cmd K</kbd>
-      </button>
-
-      {isOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/60 px-4 py-24 backdrop-blur-sm" role="dialog" aria-modal="true">
+  const palette = isOpen
+    ? createPortal(
+        <div className="fixed inset-0 z-[9999] min-h-dvh bg-slate-950/70 px-4 py-24 backdrop-blur-sm" role="dialog" aria-modal="true">
           <div className="mx-auto max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900">
             <div className="border-b border-slate-200 p-4 dark:border-slate-800">
               <label htmlFor="command-search" className="sr-only">
@@ -80,8 +77,24 @@ export function CommandPalette({ navItems }: CommandPaletteProps) {
               {filteredItems.length === 0 && <p className="px-4 py-6 text-sm text-slate-500">No matching pages found.</p>}
             </div>
           </div>
-        </div>
-      )}
+        </div>,
+        document.body,
+      )
+    : null;
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="hidden h-10 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-500 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-brand-400 dark:hover:text-brand-200 dark:focus:ring-offset-slate-950 sm:inline-flex"
+        aria-label="Open command palette"
+      >
+        <span>Search</span>
+        <kbd className="rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-500 dark:bg-slate-800 dark:text-slate-400">Cmd K</kbd>
+      </button>
+
+      {palette}
     </>
   );
 }
