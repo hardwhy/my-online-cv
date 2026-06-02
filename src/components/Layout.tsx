@@ -29,6 +29,7 @@ export function Layout() {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [isHeroPhotoVisible, setIsHeroPhotoVisible] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const initials = useMemo(
     () =>
       profile.fullName
@@ -57,6 +58,7 @@ export function Layout() {
   }, [location.pathname]);
 
   const shouldShowProfilePhoto = location.pathname !== '/' || !isHeroPhotoVisible;
+  const activeNavItem = navItems.find((item) => item.to === location.pathname) ?? navItems[0];
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100">
@@ -125,22 +127,48 @@ export function Layout() {
             <ThemeToggle theme={theme} onToggle={toggleTheme} />
           </div>
         </nav>
-        <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 pb-4 sm:px-6 lg:hidden lg:px-8" aria-label="Mobile navigation">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                `shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  isActive
-                    ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950'
-                    : 'bg-slate-100 text-slate-600 hover:text-slate-950 dark:bg-slate-900 dark:text-slate-300 dark:hover:text-white'
-                }`
-              }
+        <div className="mx-auto max-w-7xl px-4 pb-4 sm:px-6 lg:hidden lg:px-8" aria-label="Mobile navigation">
+          <div className="relative">
+            <button
+              type="button"
+              className="flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-slate-100 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-white"
+              aria-expanded={isMobileNavOpen}
+              onClick={() => setIsMobileNavOpen((isOpen) => !isOpen)}
             >
-              {item.label}
-            </NavLink>
-          ))}
+              <span>{activeNavItem.label}</span>
+              <svg
+                className={`h-4 w-4 transition ${isMobileNavOpen ? 'rotate-180' : ''}`}
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path d="M5 7.5 10 12.5 15 7.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            {isMobileNavOpen ? (
+              <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-soft dark:border-slate-800 dark:bg-slate-950">
+                {navItems.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    onClick={() => setIsMobileNavOpen(false)}
+                    className={({ isActive }) =>
+                      `block rounded-xl px-3 py-2 text-sm font-semibold transition ${
+                        isActive
+                          ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950'
+                          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white'
+                      }`
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                ))}
+              </div>
+            ) : null}
+          </div>
         </div>
       </header>
 
