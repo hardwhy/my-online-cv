@@ -54,9 +54,11 @@ export default function Contact() {
 
   const validate = () => {
     const nextErrors: Partial<FormState> = {};
+    const email = form.email.trim().toLowerCase();
 
     if (!form.name.trim()) nextErrors.name = 'Please enter your name.';
     if (!/^\S+@\S+\.\S+$/.test(form.email)) nextErrors.email = 'Please enter a valid email.';
+    else if (email === profile.email.toLowerCase()) nextErrors.email = 'Please use your own email address.';
     if (!form.subject.trim()) nextErrors.subject = 'Please add a subject.';
     if (form.message.trim().length < 20) nextErrors.message = 'Please write at least 20 characters.';
     if (form.name.length > 80) nextErrors.name = 'Please keep your name under 80 characters.';
