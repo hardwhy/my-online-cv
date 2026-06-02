@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Project } from '../types/content';
+import { ProjectVisual } from './ProjectVisual';
 
 type ProjectCardProps = {
   project: Project;
@@ -9,13 +10,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
   return (
     <article className="group overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-soft dark:border-slate-800 dark:bg-slate-900/80">
       <div className="aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
-        <img
-          src={project.thumbnail}
-          alt={`${project.title} project preview`}
-          loading="lazy"
-          className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
+        <ProjectVisual
+          project={project}
+          imageSrc={project.thumbnail}
+          className="h-full w-full transition duration-500 group-hover:scale-105"
+          imageClassName="h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
         />
-  
       </div>
       <div className="p-6">
         <div className="flex items-center justify-between gap-4">

@@ -1,5 +1,6 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { PageTransition } from '../components/PageTransition';
+import { ProjectVisual } from '../components/ProjectVisual';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
 import { projects } from '../data/projects';
@@ -18,7 +19,12 @@ export default function ProjectDetail() {
       <Section eyebrow={project.category} title={project.title} description={project.description}>
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900">
-            <img src={project.screenshots[0]} alt={`${project.title} screenshot`} className="w-full object-cover" />
+            <ProjectVisual
+              project={project}
+              imageSrc={project.screenshots?.[0] || project.thumbnail}
+              className="aspect-[16/10] w-full"
+              imageClassName="aspect-[16/10] w-full object-cover"
+            />
           </div>
           <aside className="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <h2 className="font-display text-2xl font-bold text-slate-950 dark:text-white">Project impact</h2>

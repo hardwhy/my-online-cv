@@ -51,8 +51,8 @@ export type Project = {
   category: ProjectCategory;
   description: string;
   impact: string;
-  thumbnail: string;
-  screenshots: string[];
+  thumbnail?: string;
+  screenshots?: string[];
   technologies: string[];
   githubUrl: string;
   liveUrl: string;
