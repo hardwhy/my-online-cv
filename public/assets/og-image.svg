@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Ayi Hardiyanto portfolio preview">
+  <rect width="1200" height="630" fill="#0f172a"/>
+  <circle cx="1000" cy="120" r="220" fill="#06b6d4" opacity=".25"/>
+  <circle cx="170" cy="520" r="180" fill="#67e8f9" opacity=".18"/>
+  <text x="90" y="230" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="800" fill="#ffffff">Ayi Hardiyanto</text>
+  <text x="92" y="310" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="700" fill="#67e8f9">Software Engineer</text>
+  <text x="92" y="390" font-family="Inter, Arial, sans-serif" font-size="26" fill="#cbd5e1">React JS, Flutter, Hasura, serverless apps</text>
+</svg>

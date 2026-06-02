@@ -1,0 +1,106 @@
+import { NavLink, Outlet } from 'react-router-dom';
+import { profile } from '../data/profile';
+import { useTheme } from '../hooks/useTheme';
+import { Analytics } from './Analytics';
+import { CommandPalette } from './CommandPalette';
+import { ThemeToggle } from './ThemeToggle';
+
+const navItems = [
+  { label: 'Home', to: '/' },
+  { label: 'About', to: '/about' },
+  { label: 'Experience', to: '/experience' },
+  { label: 'Projects', to: '/projects' },
+  { label: 'Skills', to: '/skills' },
+  { label: 'Certifications', to: '/certifications' },
+  { label: 'Contact', to: '/contact' },
+];
+
+export function Layout() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors dark:bg-slate-950 dark:text-slate-100">
+      <Analytics />
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white"
+      >
+        Skip to content
+      </a>
+      <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl dark:border-slate-800/80 dark:bg-slate-950/80">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+          <NavLink to="/" className="group flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 font-display text-sm font-bold text-white shadow-soft transition group-hover:-translate-y-0.5 dark:bg-white dark:text-slate-950">
+              {profile.fullName
+                .split(' ')
+                .map((part) => part[0])
+                .join('')
+                .slice(0, 2)}
+            </span>
+            <span>
+              <span className="block font-display text-base font-bold">{profile.fullName}</span>
+              <span className="block text-xs font-medium text-slate-500 dark:text-slate-400">{profile.title}</span>
+            </span>
+          </NavLink>
+
+          <div className="hidden items-center gap-1 rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900 lg:flex">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `rounded-full px-4 py-2 text-sm font-semibold transition ${
+                    isActive
+                      ? 'bg-white text-brand-700 shadow-sm dark:bg-slate-800 dark:text-brand-200'
+                      : 'text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white'
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <CommandPalette navItems={navItems} />
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          </div>
+        </nav>
+        <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 pb-4 sm:px-6 lg:hidden lg:px-8" aria-label="Mobile navigation">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  isActive
+                    ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950'
+                    : 'bg-slate-100 text-slate-600 hover:text-slate-950 dark:bg-slate-900 dark:text-slate-300 dark:hover:text-white'
+                }`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+      </header>
+
+      <main id="main">
+        <Outlet />
+      </main>
+
+      <footer className="border-t border-slate-200 bg-white py-8 dark:border-slate-800 dark:bg-slate-950">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 text-sm text-slate-500 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <p>(c) {new Date().getFullYear()} {profile.fullName}. Built with React, TypeScript, Vite, and Tailwind CSS.</p>
+          <div className="flex gap-4">
+            {profile.socials.map((social) => (
+              <a key={social.label} href={social.href} className="font-semibold hover:text-brand-600 dark:hover:text-brand-300">
+                {social.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

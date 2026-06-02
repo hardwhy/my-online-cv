@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-label="Commerce API gateway preview">
+  <rect width="960" height="600" rx="36" fill="#f8fafc"/>
+  <rect x="88" y="106" width="240" height="140" rx="26" fill="#0f172a"/>
+  <rect x="360" y="106" width="240" height="140" rx="26" fill="#06b6d4"/>
+  <rect x="632" y="106" width="240" height="140" rx="26" fill="#164e63"/>
+  <rect x="224" y="342" width="512" height="120" rx="32" fill="#e2e8f0"/>
+  <path d="M208 246v74h544v-74M480 246v96" fill="none" stroke="#0891b2" stroke-width="12" stroke-linecap="round"/>
+  <text x="88" y="522" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#0f172a">Commerce API Gateway</text>
+</svg>

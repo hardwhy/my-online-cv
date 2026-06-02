@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-label="Design system preview">
+  <rect width="960" height="600" rx="36" fill="#ecfeff"/>
+  <rect x="70" y="72" width="820" height="456" rx="34" fill="#ffffff"/>
+  <rect x="108" y="118" width="240" height="68" rx="18" fill="#0f172a"/>
+  <rect x="108" y="232" width="170" height="170" rx="30" fill="#06b6d4"/>
+  <rect x="314" y="232" width="170" height="170" rx="30" fill="#164e63"/>
+  <rect x="520" y="232" width="170" height="170" rx="30" fill="#67e8f9"/>
+  <rect x="726" y="232" width="90" height="170" rx="30" fill="#cbd5e1"/>
+  <text x="108" y="478" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#0f172a">Design System Platform</text>
+</svg>

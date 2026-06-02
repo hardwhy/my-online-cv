@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 840" role="img" aria-label="Professional profile illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ecfeff"/>
+      <stop offset="1" stop-color="#164e63"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="840" rx="56" fill="url(#bg)"/>
+  <circle cx="360" cy="300" r="128" fill="#0f172a"/>
+  <circle cx="360" cy="270" r="76" fill="#f8fafc"/>
+  <path d="M172 730c18-126 91-199 188-199s170 73 188 199H172Z" fill="#f8fafc"/>
+  <path d="M152 152h416v536H152z" fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="3"/>
+  <text x="360" y="105" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#0f172a">Senior Software Engineer</text>
+</svg>
