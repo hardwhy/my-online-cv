@@ -35,14 +35,16 @@ Do not commit real `.env` or `.env.local` files. The Supabase publishable key is
 Use predictable folders inside the `portfolio` bucket:
 
 ```text
-profile/ayi-hardiyanto-profile.webp
+profile/ayi-hardiyanto-profile.png
 projects/{project-slug}/thumbnail.webp
-projects/{project-slug}/screenshots/{screenshot-name}.webp
 certificates/{certificate-slug}/certificate.pdf
 certificates/{certificate-slug}/preview.webp
 ```
 
-For the simplest maintenance, paste public asset URLs into the matching database URL columns.
+Project and profile images are resolved by frontend convention from Supabase Storage, not from database columns:
+
+- `profile/ayi-hardiyanto-profile.png`
+- `projects/{project-slug}/thumbnail.webp`
 
 ## Seed Existing Content
 
@@ -57,7 +59,9 @@ Run order:
 
 The seed is a replacement seed: rerunning it deletes rows from the portfolio content tables and inserts the current repo content again. Do not rerun it after editing production content in Supabase Dashboard unless you intentionally want to replace that content.
 
-The seed sets `site_profile.photo_url`, `certifications.download_url`, and `certifications.image_url` to `null` where the final Supabase Storage URLs are not known yet. Upload those files to Storage, copy their public URLs, then update the matching rows in the Dashboard.
+The seed still includes legacy image columns because it matches the original schema. If you run the seed, run `docs/supabase-migration-drop-content-image-columns.sql` afterward to remove profile and project image columns. Certificate file URLs can still be managed through `certifications.download_url` and `certifications.image_url`.
+
+If your database was created before image fields were moved out of content tables, run `docs/supabase-migration-drop-content-image-columns.sql`. It drops only `site_profile.photo_url`, `projects.thumbnail_url`, and `projects.screenshots`; it does not delete content rows.
 
 ## Content Model
 
