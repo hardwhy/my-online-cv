@@ -7,9 +7,10 @@ This portfolio reads public content from Supabase and keeps GitHub Pages as the 
 1. Create a Supabase project.
 2. Open the Supabase SQL Editor and run `docs/supabase-schema.sql`.
 3. Run `docs/supabase-seed.sql` if you want to import the current static portfolio content.
-4. Upload assets to the public `portfolio` storage bucket.
-5. Update image and file URL columns manually through the Supabase Dashboard.
-6. Add Vite environment variables locally and in the GitHub Pages deployment environment.
+4. Run `docs/supabase-admin-policies.sql` if you want to use the admin portal.
+5. Upload assets to the public `portfolio` storage bucket.
+6. Update image and file URL columns manually through the Supabase Dashboard or admin portal.
+7. Add Vite environment variables locally and in the GitHub Pages deployment environment.
 
 ## Environment Variables
 
@@ -29,6 +30,24 @@ VITE_SUPABASE_ANON_KEY=your-public-anon-key
 Restart the Vite dev server after changing `VITE_CONTENT_SOURCE`, because Vite reads environment variables at startup.
 
 Do not commit real `.env` or `.env.local` files. The Supabase publishable key is safe to expose in the browser when Row Level Security policies only allow public reads. Never put the Supabase secret key, service role key, database password, or dashboard credentials in frontend environment variables.
+
+## Admin Portal Setup
+
+The admin portal is a browser-only app. It still uses the public anon key, so all write security depends on Supabase Auth, table RLS, and storage policies.
+
+1. In Supabase Dashboard, enable Email/Password authentication.
+2. Create your admin user from `Authentication` -> `Users`.
+3. Copy the user's UUID.
+4. Run `docs/supabase-admin-policies.sql` in the SQL Editor.
+5. Add your user to the allowlist:
+
+```sql
+insert into public.app_admins (user_id)
+values ('YOUR_AUTH_USER_UUID')
+on conflict (user_id) do nothing;
+```
+
+After this, the admin app can read drafts, create/update/delete content rows, and upload files to the `portfolio` bucket. Do not add a service role key to `apps/admin`; it must never be exposed in browser environment variables.
 
 ## Storage Paths
 
@@ -83,9 +102,9 @@ Array or JSON fields are used for small ordered lists like socials, stats, stren
 
 ## Security Model
 
-The frontend uses only the public anon key. RLS is enabled on every table. Public users can only `select` rows where `is_published = true`. There are no frontend insert, update, or delete operations.
+The public website uses only the public anon key. RLS is enabled on every table. Public users can only `select` rows where `is_published = true`.
 
-Content editing happens manually in the Supabase Dashboard.
+The admin portal also uses the public anon key, but authenticated writes are allowed only when `public.is_admin()` returns true for the signed-in user. The allowlist lives in `public.app_admins`.
 
 ## Rollout Notes
 

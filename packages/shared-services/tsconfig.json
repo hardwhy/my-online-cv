@@ -13,7 +13,13 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2020",
-    "tsBuildInfoFile": "../../node_modules/.tmp/packages-shared-services.tsbuildinfo"
+    "tsBuildInfoFile": "../../node_modules/.tmp/packages-shared-services.tsbuildinfo",
+    "disableSourceOfProjectReferenceRedirect": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../shared-types"
+    }
+  ]
 }

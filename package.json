@@ -5,9 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "nx serve web",
+    "dev:admin": "nx serve admin",
     "build": "nx build web",
+    "build:admin": "nx build admin",
     "preview": "nx preview web",
-    "lint": "nx lint web"
+    "preview:admin": "nx preview admin",
+    "lint": "nx lint web",
+    "lint:admin": "nx lint admin"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.78.0",
