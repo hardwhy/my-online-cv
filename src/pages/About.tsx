@@ -2,11 +2,12 @@ import { PageTransition } from '../components/PageTransition';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
 import { SkillBar } from '../components/SkillBar';
-import { experiences } from '../data/experiences';
-import { profile } from '../data/profile';
-import { skills } from '../data/skills';
+import { useExperiences, useProfile, useSkills } from '../hooks/usePortfolioContent';
 
 export default function About() {
+  const { data: experiences } = useExperiences();
+  const { data: profile } = useProfile();
+  const { data: skills } = useSkills();
   const highlightedSkills = skills.slice(0, 8);
 
   return (

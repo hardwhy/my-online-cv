@@ -1,9 +1,11 @@
 import { PageTransition } from '../components/PageTransition';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { certifications } from '../data/certifications';
+import { useCertifications } from '../hooks/usePortfolioContent';
 
 export default function Certifications() {
+  const { data: certifications } = useCertifications();
+
   return (
     <PageTransition>
       <Seo title="Certifications" description="Professional certifications, issuers, dates, credential links, and downloads." path="/certifications" />
@@ -18,9 +20,11 @@ export default function Certifications() {
                 <a href={certificate.credentialUrl} className="btn-primary">
                   Credential URL
                 </a>
-                <a href={certificate.downloadUrl} className="btn-secondary" download>
-                  Download certificate
-                </a>
+                {certificate.downloadUrl && (
+                  <a href={certificate.downloadUrl} className="btn-secondary" download>
+                    Download certificate
+                  </a>
+                )}
               </div>
             </article>
           ))}

@@ -2,9 +2,11 @@ import { PageTransition } from '../components/PageTransition';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
 import { SkillBar } from '../components/SkillBar';
-import { skillCategories, skills } from '../data/skills';
+import { skillCategories, useSkills } from '../hooks/usePortfolioContent';
 
 export default function Skills() {
+  const { data: skills } = useSkills();
+
   return (
     <PageTransition>
       <Seo title="Skills" description="Categorized technical skills with visual proficiency indicators." path="/skills" />

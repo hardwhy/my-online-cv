@@ -2,7 +2,7 @@ import { FormEvent, useRef, useState } from 'react';
 import { PageTransition } from '../components/PageTransition';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { profile } from '../data/profile';
+import { useProfile } from '../hooks/usePortfolioContent';
 
 type FormState = {
   name: string;
@@ -30,6 +30,7 @@ const getRemainingCooldownMs = () => {
 };
 
 export default function Contact() {
+  const { data: profile } = useProfile();
   const [form, setForm] = useState<FormState>(initialForm);
   const [honeypot, setHoneypot] = useState('');
   const [errors, setErrors] = useState<Partial<FormState>>({});

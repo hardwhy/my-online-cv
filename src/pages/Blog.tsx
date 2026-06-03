@@ -1,9 +1,11 @@
 import { PageTransition } from '../components/PageTransition';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { blogPosts } from '../data/blog';
+import { useBlogPosts } from '../hooks/usePortfolioContent';
 
 export default function Blog() {
+  const { data: blogPosts } = useBlogPosts();
+
   return (
     <PageTransition>
       <Seo title="Blog" description="Future articles on software architecture, delivery, leadership, and engineering systems." path="/blog" />

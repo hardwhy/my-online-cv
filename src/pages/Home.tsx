@@ -4,10 +4,13 @@ import { PageTransition } from '../components/PageTransition';
 import { ProjectCard } from '../components/ProjectCard';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { achievements, profile, testimonials } from '../data/profile';
-import { projects } from '../data/projects';
+import { useAchievements, useProfile, useProjects, useTestimonials } from '../hooks/usePortfolioContent';
 
 export default function Home() {
+  const { data: profile } = useProfile();
+  const { data: projects } = useProjects();
+  const { data: achievements } = useAchievements();
+  const { data: testimonials } = useTestimonials();
   const featuredProjects = projects.filter((project) => project.featured);
 
   return (

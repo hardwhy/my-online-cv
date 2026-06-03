@@ -3,11 +3,19 @@ import { PageTransition } from '../components/PageTransition';
 import { ProjectVisual } from '../components/ProjectVisual';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { projects } from '../data/projects';
+import { useProject } from '../hooks/usePortfolioContent';
 
 export default function ProjectDetail() {
   const { slug } = useParams();
-  const project = projects.find((item) => item.slug === slug);
+  const { data: project, isFetching } = useProject(slug);
+
+  if (!project && isFetching) {
+    return (
+      <PageTransition>
+        <Section eyebrow="Projects" title="Loading project" description="Fetching the latest project details." />
+      </PageTransition>
+    );
+  }
 
   if (!project) {
     return <Navigate to="/projects" replace />;

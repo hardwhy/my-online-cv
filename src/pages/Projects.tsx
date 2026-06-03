@@ -3,16 +3,17 @@ import { PageTransition } from '../components/PageTransition';
 import { ProjectCard } from '../components/ProjectCard';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { projectCategories, projects } from '../data/projects';
+import { projectCategories, useProjects } from '../hooks/usePortfolioContent';
 
 export default function Projects() {
+  const { data: projects } = useProjects();
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState<(typeof projectCategories)[number]>('All');
   const [technology, setTechnology] = useState('All');
 
   const technologies = useMemo(
     () => ['All', ...Array.from(new Set(projects.flatMap((project) => project.technologies))).sort()],
-    [],
+    [projects],
   );
 
   const filteredProjects = projects.filter((project) => {
@@ -45,7 +46,7 @@ export default function Projects() {
             <span className="relative block">
               <select
                 value={category}
-                onChange={(event) => setCategory(event.target.value as typeof category)}
+                onChange={(event) => setCategory(event.target.value as (typeof projectCategories)[number])}
                 className="h-12 w-full appearance-none rounded-full border border-slate-200 bg-slate-50 px-4 pr-11 text-sm font-semibold text-slate-700 outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:focus:ring-brand-950"
               >
                 {projectCategories.map((item) => (

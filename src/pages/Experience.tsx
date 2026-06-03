@@ -2,9 +2,11 @@ import { ExperienceAccordion } from '../components/ExperienceAccordion';
 import { PageTransition } from '../components/PageTransition';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { experiences } from '../data/experiences';
+import { useExperiences } from '../hooks/usePortfolioContent';
 
 export default function Experience() {
+  const { data: experiences } = useExperiences();
+
   return (
     <PageTransition>
       <Seo title="Experience" description="Timeline of roles, responsibilities, achievements, and technologies used." path="/experience" />
