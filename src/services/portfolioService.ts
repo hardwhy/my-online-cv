@@ -15,7 +15,6 @@ type ProfileRow = {
   location: string;
   email: string;
   phone: string | null;
-  photo_url: string | null;
   resume_url: string | null;
   socials: unknown;
   stats: unknown;
@@ -47,8 +46,6 @@ type ProjectRow = {
   category: Project['category'];
   description: string;
   impact: string;
-  thumbnail_url: string | null;
-  screenshots: string[] | null;
   technologies: string[] | null;
   github_url: string | null;
   live_url: string | null;
@@ -96,7 +93,6 @@ const mapProfile = (row: ProfileRow): Profile => ({
   location: row.location,
   email: row.email,
   phone: row.phone ?? undefined,
-  photo: optionalUrl(row.photo_url) ?? fallbackProfile.photo,
   resumeUrl: optionalUrl(row.resume_url) ?? fallbackProfile.resumeUrl,
   socials: readArray<SocialLink>(row.socials, fallbackProfile.socials),
   stats: readArray<Stat>(row.stats, fallbackProfile.stats),
@@ -128,8 +124,6 @@ const mapProject = (row: ProjectRow): Project => ({
   category: row.category,
   description: row.description,
   impact: row.impact,
-  thumbnail: optionalUrl(row.thumbnail_url),
-  screenshots: readArray<string>(row.screenshots),
   technologies: readArray<string>(row.technologies),
   githubUrl: linkUrl(row.github_url),
   liveUrl: linkUrl(row.live_url),
@@ -155,13 +149,11 @@ const mapBlogPost = (row: BlogPostRow): BlogPost => ({
 });
 
 export async function getProfile(): Promise<Profile> {
-  console.log('isSupabaseContentEnabled', isSupabaseContentEnabled);
-  console.log('supabase', supabase);
   if (!isSupabaseContentEnabled || !supabase) return fallbackProfile;
 
   const { data, error } = await supabase
     .from('site_profile')
-    .select('full_name,title,summary,location,email,phone,photo_url,resume_url,socials,stats,strengths,interests')
+    .select('full_name,title,summary,location,email,phone,resume_url,socials,stats,strengths,interests')
     .eq('is_published', true)
     .limit(1)
     .maybeSingle<ProfileRow>();
@@ -201,7 +193,7 @@ export async function getProjects(): Promise<Project[]> {
 
   const { data, error } = await supabase
     .from('projects')
-    .select('slug,title,category,description,impact,thumbnail_url,screenshots,technologies,github_url,live_url,featured')
+    .select('slug,title,category,description,impact,technologies,github_url,live_url,featured')
     .eq('is_published', true)
     .order('sort_order', { ascending: true });
 
