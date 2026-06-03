@@ -82,6 +82,7 @@ src/
   types/            Shared TypeScript interfaces
 docs/
   supabase.md       Supabase setup and migration notes
+  supabase-migration-drop-content-image-columns.sql
   supabase-schema.sql
   supabase-seed.sql
 public/
