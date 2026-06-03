@@ -1,0 +1,38 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "web",
+  "projectType": "application",
+  "sourceRoot": "apps/web/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/web"],
+      "options": {
+        "command": "tsc -b apps/web/tsconfig.json && vite build --config apps/web/vite.config.ts",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite --config apps/web/vite.config.ts",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite preview --config apps/web/vite.config.ts",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint apps/web",
+        "cwd": "{workspaceRoot}"
+      }
+    }
+  },
+  "tags": ["type:app", "scope:web"]
+}

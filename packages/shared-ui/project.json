@@ -1,0 +1,17 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "shared-ui",
+  "projectType": "library",
+  "sourceRoot": "packages/shared-ui/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/packages/shared-ui"],
+      "options": {
+        "command": "tsc -p packages/shared-ui/tsconfig.json",
+        "cwd": "{workspaceRoot}"
+      }
+    }
+  },
+  "tags": ["type:lib", "scope:shared"]
+}

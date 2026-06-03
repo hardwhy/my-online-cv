@@ -1,6 +1,6 @@
 # Senior Engineer Portfolio
 
-A modern, responsive personal CV and portfolio application built with React, TypeScript, Vite, Tailwind CSS, Framer Motion, React Router, and Supabase.
+A modern, responsive personal CV and portfolio application built with Nx, React, TypeScript, Vite, Tailwind CSS, Framer Motion, React Router, and Supabase.
 
 ## Features
 
@@ -26,6 +26,7 @@ A modern, responsive personal CV and portfolio application built with React, Typ
 - React Router
 - React Query
 - Supabase
+- Nx
 
 ## Getting Started
 
@@ -72,36 +73,41 @@ The Vite build uses relative asset paths, so it works whether the repository is 
 ## Project Structure
 
 ```text
-src/
-  components/       Reusable layout, cards, animation, SEO, and UI elements
-  data/             Static fallback portfolio content
-  hooks/            Theme, interaction, and portfolio query hooks
-  lib/              Supabase and React Query clients
-  pages/            Routed page views
-  services/         Supabase portfolio data access and mappers
-  types/            Shared TypeScript interfaces
+apps/
+  web/
+    src/
+      components/       Reusable layout, cards, animation, SEO, and UI elements
+      data/             Static fallback portfolio content
+      hooks/            Theme, interaction, and portfolio query hooks
+      lib/              Supabase and React Query clients
+      pages/            Routed page views
+      services/         Supabase portfolio data access and mappers
+      types/            Shared TypeScript interfaces
+    public/             Static assets, PDFs, robots.txt, sitemap.xml
+packages/
+  shared-types/         Future shared content and database types
+  shared-ui/            Future reusable UI primitives
+  shared-services/      Future shared data access and validation utilities
+  supabase/             Future shared Supabase client and storage helpers
 docs/
   supabase.md       Supabase setup and migration notes
   supabase-migration-drop-content-image-columns.sql
   supabase-schema.sql
   supabase-seed.sql
-public/
-  assets/           Optimized SVG profile, previews, favicon, and OG image
-  cv/               Downloadable CV and certificate placeholders
 ```
 
 ## Customization
 
 Portfolio content can be loaded from Supabase or from the static fallback files. During migration, keep these files available for local testing and fallback content:
 
-- `src/data/profile.ts`
-- `src/data/experiences.ts`
-- `src/data/projects.ts`
-- `src/data/certifications.ts`
-- `src/data/skills.ts`
-- `src/data/blog.ts`
+- `apps/web/src/data/profile.ts`
+- `apps/web/src/data/experiences.ts`
+- `apps/web/src/data/projects.ts`
+- `apps/web/src/data/certifications.ts`
+- `apps/web/src/data/skills.ts`
+- `apps/web/src/data/blog.ts`
 
-Replace placeholder PDFs in `public/cv/` with real CV and certificate files. Replace `https://example.com` in `index.html`, `public/robots.txt`, and `public/sitemap.xml` with your deployed domain.
+Replace placeholder PDFs in `apps/web/public/cv/` with real CV and certificate files. Replace `https://example.com` in `apps/web/index.html`, `apps/web/public/robots.txt`, and `apps/web/public/sitemap.xml` with your deployed domain.
 
 ## Analytics
 

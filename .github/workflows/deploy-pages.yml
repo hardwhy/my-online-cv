@@ -40,15 +40,15 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: npm run lint
+        run: npx nx lint web
 
       - name: Build
-        run: npm run build
+        run: npx nx build web
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: dist/apps/web
 
   deploy:
     environment:
