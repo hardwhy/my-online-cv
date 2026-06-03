@@ -9,11 +9,6 @@ export const projects: Project[] = [
       "PX is a mobile HR operations app that helps talents handle onboarding, digital contracts, task management, leave tracking, mood check-ins, and personal information updates from their phone.",
     impact:
       "Increased talent productivity and engagement through a seamless, mobile-first HR experience.",
-    thumbnail:
-      "https://play-lh.googleusercontent.com/Yg6VjY1oTYFZpT64yC92IYRAMM5TjjPk6DlurZlUoGkPoiAxp5OhHW3CLmowhIRZWQ=w480-h960-rw",
-    screenshots: [
-      "https://play-lh.googleusercontent.com/Yg6VjY1oTYFZpT64yC92IYRAMM5TjjPk6DlurZlUoGkPoiAxp5OhHW3CLmowhIRZWQ=w480-h960-rw",
-    ],
     technologies: ["Flutter", "Serverless Computing", "Hasura", "Agile"],
     githubUrl: "#",
     liveUrl:
@@ -28,8 +23,6 @@ export const projects: Project[] = [
       "Plebo is a secure personal health app for organizing medical records, conditions, medications, allergies, immunizations, and daily health tracker data in one place.",
     impact:
       "Developed from scratch as a Flutter Developer, including Cubit state management, Dio API integration, secure token authentication, and Android/iOS release coordination.",
-    thumbnail: "https://play-lh.googleusercontent.com/WZEjgEPb3Jcqe1tdFrbUtouVDBhizrwIUCzs07CgWJ4WpoD4udEKpnOES_lxL6RjRA=w480-h960-rw",
-    screenshots: ["https://play-lh.googleusercontent.com/WZEjgEPb3Jcqe1tdFrbUtouVDBhizrwIUCzs07CgWJ4WpoD4udEKpnOES_lxL6RjRA=w480-h960-rw"],
     technologies: [
       "Flutter",
       "Dart",
@@ -51,8 +44,6 @@ export const projects: Project[] = [
       "Real-time lightning strike monitoring dashboard that helps customers track lightning protection device activity as events happen.",
     impact:
       "Built as a Full Stack Developer using React, Redux, CSS, Firebase Authentication, Firestore real-time updates, and backend services for receiving and storing lightning strike data.",
-    thumbnail: "",
-    screenshots: [],
     technologies: [
       "React",
       "Redux",
@@ -74,8 +65,6 @@ export const projects: Project[] = [
       "Development and maintenance work across You Are Stellar, Stellar Growth, Purposeful Experience, and Purposeful Well.",
     impact:
       "Enhanced user engagement and satisfaction for HR and people development mobile experiences.",
-    thumbnail: "",
-    screenshots: [],
     technologies: [
       "Mobile Development",
       "Application Maintenance",
@@ -94,8 +83,6 @@ export const projects: Project[] = [
       "Software delivery lifecycle experience from Enigma Camp, focused on building high-quality applications and mobile app experiences.",
     impact:
       "Built a strong foundation in full-stack application development and exceeded training targets by 30%.",
-    thumbnail: "",
-    screenshots: [],
     technologies: [
       "Full-Stack Development",
       "Software Delivery",
@@ -114,8 +101,6 @@ export const projects: Project[] = [
       "Published academic work related to an Android application for extractive text summarization.",
     impact:
       "Demonstrates early applied interest in mobile development, research, and practical software systems.",
-    thumbnail: "https://emer.silverchair-cdn.com/emer/content_public/journal/lhtn/issue/38/5/2/m_lhtn_cover.jpeg?Expires=1783415462&Signature=Bnzs8~UUS8YaYNVQt-pS119AlYNorLnfzzmcOgDv8PAY8TYKS~FTVHmxuEK82Piq-xBt15MFgbospUQlegs3nmS23gLgFQ5yHEwh~j5M6YsTBceys7pJniyPH~p4U64yJkakaVC0Wqa7qUJFwU0bkF925odOAwiBrAxHdf6dt-JjZVWk65Ssuvx7WSN4xtbA6PdcjfXA-izlQKZsOOu2Ks3yqnfs8R~59kGp8Q2ferHgdhDDISz8fNSWmy6Dv0NWluy-rPs9UD~rCnarDue7SLoC-KoIGDVG3GOcHpSNEnL8vUajzDTrFdws9mLVQ-9bXenDEtVLbN6oFDzxr1EEHg__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA",
-    screenshots: ["https://emer.silverchair-cdn.com/emer/content_public/journal/lhtn/issue/38/5/2/m_lhtn_cover.jpeg?Expires=1783415462&Signature=Bnzs8~UUS8YaYNVQt-pS119AlYNorLnfzzmcOgDv8PAY8TYKS~FTVHmxuEK82Piq-xBt15MFgbospUQlegs3nmS23gLgFQ5yHEwh~j5M6YsTBceys7pJniyPH~p4U64yJkakaVC0Wqa7qUJFwU0bkF925odOAwiBrAxHdf6dt-JjZVWk65Ssuvx7WSN4xtbA6PdcjfXA-izlQKZsOOu2Ks3yqnfs8R~59kGp8Q2ferHgdhDDISz8fNSWmy6Dv0NWluy-rPs9UD~rCnarDue7SLoC-KoIGDVG3GOcHpSNEnL8vUajzDTrFdws9mLVQ-9bXenDEtVLbN6oFDzxr1EEHg__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA"],
     technologies: [
       "Android",
       "Mobile Development",
@@ -135,8 +120,6 @@ export const projects: Project[] = [
       "Flutter mobile application for HousePetAll, a pet-care platform where pets can receive medical care, treatment, and attention.",
     impact:
       "Provides the mobile client for a pet healthcare experience integrated with the HousePetAll API.",
-    thumbnail: "",
-    screenshots: [],
     technologies: ["Flutter", "Dart", "Android", "iOS", "Mobile Development"],
     githubUrl: "https://github.com/hardwhy/housepetall",
     liveUrl: "#",
@@ -150,8 +133,6 @@ export const projects: Project[] = [
       "Backend API service powering the HousePetAll pet healthcare application with a scalable Node.js and Nx-based service structure.",
     impact:
       "Supports the mobile app with backend services for a dedicated pet medical care platform.",
-    thumbnail: "",
-    screenshots: [],
     technologies: ["TypeScript", "Node.js", "Nx Monorepo", "API", "Backend"],
     githubUrl: "https://github.com/hardwhy/housepetall-api",
     liveUrl: "#",
@@ -165,8 +146,6 @@ export const projects: Project[] = [
       "Next.js web app for discovering a break from daily routines, built as a modern holiday and rest-focused experience.",
     impact:
       "Demonstrates full-stack web development using Next.js, TypeScript, Prisma, and deployment on Vercel.",
-    thumbnail: "",
-    screenshots: [],
     technologies: ["Next.js", "TypeScript", "Prisma", "Tailwind CSS", "Vercel"],
     githubUrl: "https://github.com/hardwhy/holiyay",
     liveUrl: "https://holiyay.vercel.app",
@@ -180,8 +159,6 @@ export const projects: Project[] = [
       "Python service for text summarization workflows, organized with model and use-case modules for backend processing.",
     impact:
       "Shows applied machine learning and service-side work supporting summarization features.",
-    thumbnail: "",
-    screenshots: [],
     technologies: ["Python", "Jupyter Notebook", "Machine Learning", "Text Summarization"],
     githubUrl: "https://github.com/hardwhy/summarator-service",
     liveUrl: "#",
@@ -195,8 +172,6 @@ export const projects: Project[] = [
       "Flutter mobile application for text summarization, connected to the broader summarization research and service ecosystem.",
     impact:
       "Highlights mobile delivery, test coverage workflow, and applied natural language processing exploration.",
-    thumbnail: "",
-    screenshots: [],
     technologies: ["Flutter", "Dart", "Shell", "Text Summarization", "Mobile Development"],
     githubUrl: "https://github.com/hardwhy/summarator",
     liveUrl: "#",
@@ -210,8 +185,6 @@ export const projects: Project[] = [
       "Flutter mobile application prototype with Android, iOS, and web targets for exploring personal finance product ideas.",
     impact:
       "Demonstrates cross-platform Flutter setup across mobile and web surfaces.",
-    thumbnail: "",
-    screenshots: [],
     technologies: ["Flutter", "Dart", "Android", "iOS", "Web"],
     githubUrl: "https://github.com/hardwhy/duit-yourself",
     liveUrl: "#",
@@ -225,8 +198,6 @@ export const projects: Project[] = [
       "Express backend service prototype for the Duit Yourself application ecosystem.",
     impact:
       "Complements the Flutter app with a JavaScript backend foundation for API development.",
-    thumbnail: "",
-    screenshots: [],
     technologies: ["JavaScript", "Express", "Backend", "API"],
     githubUrl: "https://github.com/hardwhy/duit-yourselef-BE-express",
     liveUrl: "#",
@@ -240,8 +211,6 @@ export const projects: Project[] = [
       "Android movie catalog application built as a Dicoding Android Developer Expert submission.",
     impact:
       "Demonstrates native Android development fundamentals and certification-oriented project delivery.",
-    thumbnail: "",
-    screenshots: [],
     technologies: ["Android", "Java", "Android Studio", "Dicoding"],
     githubUrl: "https://github.com/hardwhy/cinelog",
     liveUrl: "#",
@@ -255,8 +224,6 @@ export const projects: Project[] = [
       "Android beginner submission project for Dicoding, built as a native contact-style mobile application.",
     impact:
       "Shows early Android learning progress and completion of beginner-level mobile development requirements.",
-    thumbnail: "",
-    screenshots: [],
     technologies: ["Android", "Java", "Android Studio", "Dicoding"],
     githubUrl: "https://github.com/hardwhy/kontak-jodoh",
     liveUrl: "#",
@@ -270,8 +237,6 @@ export const projects: Project[] = [
       "Java command-line docking system for creating piers, reserving boats, docking, leaving, and checking pier status.",
     impact:
       "Built for a DKATALIS recruitment program, demonstrating algorithmic command handling and Java application packaging.",
-    thumbnail: "",
-    screenshots: [],
     technologies: ["Java", "Maven", "Docker", "Jenkins", "CLI"],
     githubUrl: "https://github.com/hardwhy/docking-bay-app",
     liveUrl: "#",
