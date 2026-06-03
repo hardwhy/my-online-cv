@@ -36,10 +36,10 @@ export function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-10 text-slate-100">
+    <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-10 font-sans text-slate-100 antialiased">
       <section className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/90 p-8">
         <p className="text-sm font-semibold uppercase tracking-[0.3em] text-brand-300">Portfolio Admin</p>
-        <h1 className="mt-3 text-3xl font-bold text-white">Sign in</h1>
+        <h1 className="mt-3 font-display text-3xl font-bold text-white">Sign in</h1>
         <p className="mt-2 text-sm text-slate-400">Use your Supabase admin account. Access is enforced by RLS policies.</p>
 
         {!isSupabaseConfigured ? (

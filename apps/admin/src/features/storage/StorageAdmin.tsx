@@ -1,8 +1,41 @@
 import { FormEvent, useMemo, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { resolveStoragePath, storageUploadTargets, uploadPortfolioAsset } from '@portfolio/shared-services';
-import type { StorageUploadTarget } from '@portfolio/shared-types';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { adminTableConfigs, listAdminRecords, resolveStoragePath, storageUploadTargets, uploadPortfolioAsset } from '@portfolio/shared-services';
+import type { AdminRecord, AdminTableName, StorageTargetKind, StorageUploadTarget } from '@portfolio/shared-types';
+import { AdminSelect } from '../../components/AdminDropdown';
 import { adminSupabase } from '../../lib/supabase';
+
+const slugSourceByTarget: Partial<Record<StorageTargetKind, AdminTableName>> = {
+  'project-thumbnail': 'projects',
+  'certificate-file': 'certifications',
+  'certificate-preview': 'certifications',
+};
+
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+const getSlugOption = (record: AdminRecord, tableName: AdminTableName) => {
+  if (tableName === 'projects') {
+    return {
+      value: String(record.slug ?? ''),
+      label: String(record.slug ?? ''),
+      description: String(record.title ?? 'Untitled project'),
+    };
+  }
+
+  const name = String(record.name ?? 'Untitled certificate');
+  const issuer = String(record.issuer ?? '');
+  const value = slugify([name, issuer].filter(Boolean).join('-'));
+  return {
+    value,
+    label: value,
+    description: issuer ? `${name} - ${issuer}` : name,
+  };
+};
 
 export function StorageAdmin() {
   const [targetKind, setTargetKind] = useState(storageUploadTargets[0].kind);
@@ -10,6 +43,22 @@ export function StorageAdmin() {
   const [file, setFile] = useState<File | null>(null);
   const [uploadResult, setUploadResult] = useState<{ path: string; publicUrl: string } | null>(null);
   const target = useMemo<StorageUploadTarget>(() => storageUploadTargets.find((item) => item.kind === targetKind) ?? storageUploadTargets[0], [targetKind]);
+  const slugSourceTableName = slugSourceByTarget[target.kind];
+  const slugSourceConfig = useMemo(() => adminTableConfigs.find((table) => table.name === slugSourceTableName), [slugSourceTableName]);
+
+  const slugOptionsQuery = useQuery({
+    queryKey: ['storage-slug-options', slugSourceConfig?.name],
+    queryFn: () => listAdminRecords(adminSupabase, slugSourceConfig!),
+    enabled: Boolean(slugSourceConfig && target.requiresSlug),
+  });
+
+  const slugOptions = useMemo(
+    () =>
+      (slugOptionsQuery.data ?? [])
+        .map((record) => getSlugOption(record, slugSourceConfig?.name ?? 'projects'))
+        .filter((option) => option.value),
+    [slugOptionsQuery.data, slugSourceConfig?.name],
+  );
 
   const uploadMutation = useMutation({
     mutationFn: () => {
@@ -39,7 +88,7 @@ export function StorageAdmin() {
     <section className="space-y-6">
       <div className="rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-700 dark:text-brand-300">Storage</p>
-        <h1 className="mt-2 text-3xl font-bold text-slate-950 dark:text-white">Portfolio Assets</h1>
+        <h1 className="mt-2 font-display text-3xl font-bold text-slate-950 dark:text-white">Portfolio Assets</h1>
         <p className="mt-2 max-w-2xl text-sm text-slate-500 dark:text-slate-400">
           Upload and replace assets in the public `portfolio` bucket. Public URLs update immediately after the upload succeeds.
         </p>
@@ -47,35 +96,33 @@ export function StorageAdmin() {
 
       <form className="rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900" onSubmit={handleSubmit}>
         <div className="grid gap-5 lg:grid-cols-2">
-          <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
-            Asset type
-            <select
-              className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition focus:border-brand-400 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-              value={targetKind}
-              onChange={(event) => {
-                setTargetKind(event.target.value as StorageUploadTarget['kind']);
-                setUploadResult(null);
-              }}
-            >
-              {storageUploadTargets.map((item) => (
-                <option key={item.kind} value={item.kind}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </label>
+          <AdminSelect
+            label="Asset type"
+            value={targetKind}
+            options={storageUploadTargets.map((item) => ({ label: item.label, value: item.kind, description: item.pathTemplate }))}
+            onChange={(nextValue) => {
+              setTargetKind(nextValue as StorageUploadTarget['kind']);
+              setSlug('');
+              setUploadResult(null);
+            }}
+          />
 
           {target.requiresSlug ? (
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
-              Slug
-              <input
-                className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition focus:border-brand-400 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            <div>
+              <AdminSelect
+                label="Slug"
                 value={slug}
-                onChange={(event) => setSlug(event.target.value)}
+                options={slugOptions}
+                onChange={setSlug}
                 placeholder="project-or-certificate-slug"
-                required
+                searchable
+                allowCustomValue
+                emptyLabel="No related slug options found."
               />
-            </label>
+              <p className="mt-2 text-xs font-normal text-slate-500 dark:text-slate-400">
+                {slugOptionsQuery.isLoading ? 'Loading related slugs...' : slugOptions.length > 0 ? 'Start typing to pick from related content.' : 'No related content options found yet.'}
+              </p>
+            </div>
           ) : null}
 
           <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 lg:col-span-2">
