@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { Project } from '../types/content';
+import { getProjectThumbnailUrl } from '../lib/storage';
 import { ProjectVisual } from './ProjectVisual';
 
 type ProjectCardProps = {
@@ -7,12 +8,44 @@ type ProjectCardProps = {
 };
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const navigate = useNavigate();
+  const thumbnailUrl = getProjectThumbnailUrl(project.slug);
+  const detailPath = `/projects/${project.slug}`;
+
+  const openProjectDetail = () => {
+    navigate(detailPath);
+  };
+
+  const handleCardClick = (event: React.MouseEvent<HTMLElement>) => {
+    if ((event.target as HTMLElement).closest('a')) {
+      return;
+    }
+
+    openProjectDetail();
+  };
+
+  const handleCardKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.key !== 'Enter' && event.key !== ' ') {
+      return;
+    }
+
+    event.preventDefault();
+    openProjectDetail();
+  };
+
   return (
-    <article className="group overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-soft dark:border-slate-800 dark:bg-slate-900/80">
+    <article
+      role="link"
+      tabIndex={0}
+      aria-label={`View details for ${project.title}`}
+      onClick={handleCardClick}
+      onKeyDown={handleCardKeyDown}
+      className="group cursor-pointer overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm outline-none transition hover:-translate-y-1 hover:shadow-soft focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-slate-800 dark:bg-slate-900/80 dark:focus-visible:ring-offset-slate-950"
+    >
       <div className="aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <ProjectVisual
           project={project}
-          imageSrc={project.thumbnail}
+          imageSrc={thumbnailUrl}
           className="h-full w-full transition duration-500 group-hover:scale-105"
           imageClassName="h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
         />
@@ -35,7 +68,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           ))}
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link to={`/projects/${project.slug}`} className="rounded-full bg-slate-950 px-4 py-2 text-sm font-bold text-white transition hover:bg-brand-700 dark:bg-white dark:text-slate-950 dark:hover:bg-brand-200">
+          <Link to={detailPath} className="rounded-full bg-slate-950 px-4 py-2 text-sm font-bold text-white transition hover:bg-brand-700 dark:bg-white dark:text-slate-950 dark:hover:bg-brand-200">
             Details
           </Link>
           {project.githubUrl !== '#' && (

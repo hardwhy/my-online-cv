@@ -3,15 +3,26 @@ import { PageTransition } from '../components/PageTransition';
 import { ProjectVisual } from '../components/ProjectVisual';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { projects } from '../data/projects';
+import { useProject } from '../hooks/usePortfolioContent';
+import { getProjectThumbnailUrl } from '../lib/storage';
 
 export default function ProjectDetail() {
   const { slug } = useParams();
-  const project = projects.find((item) => item.slug === slug);
+  const { data: project, isFetching } = useProject(slug);
+
+  if (!project && isFetching) {
+    return (
+      <PageTransition>
+        <Section eyebrow="Projects" title="Loading project" description="Fetching the latest project details." />
+      </PageTransition>
+    );
+  }
 
   if (!project) {
     return <Navigate to="/projects" replace />;
   }
+
+  const thumbnailUrl = getProjectThumbnailUrl(project.slug);
 
   return (
     <PageTransition>
@@ -21,7 +32,7 @@ export default function ProjectDetail() {
           <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900">
             <ProjectVisual
               project={project}
-              imageSrc={project.screenshots?.[0] || project.thumbnail}
+              imageSrc={thumbnailUrl}
               className="aspect-[16/10] w-full"
               imageClassName="aspect-[16/10] w-full object-cover"
             />
@@ -39,12 +50,12 @@ export default function ProjectDetail() {
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
               {project.githubUrl !== '#' && (
-                <a href={project.githubUrl} className="btn-primary">
+                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">
                   View GitHub
                 </a>
               )}
               {project.liveUrl !== '#' && (
-                <a href={project.liveUrl} className="btn-secondary">
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary">
                   View reference
                 </a>
               )}

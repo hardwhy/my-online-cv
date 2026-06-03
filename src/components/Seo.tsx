@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { profile } from '../data/profile';
+import { useProfile } from '../hooks/usePortfolioContent';
 
 type SeoProps = {
   title: string;
@@ -17,6 +17,8 @@ const setMeta = (selector: string, attribute: 'content' | 'href', value: string)
 };
 
 export function Seo({ title, description, path = '/' }: SeoProps) {
+  const { data: profile } = useProfile();
+
   useEffect(() => {
     const fullTitle = `${title} | ${profile.fullName}`;
     const canonical = `${siteUrl}${path}`;
@@ -28,7 +30,7 @@ export function Seo({ title, description, path = '/' }: SeoProps) {
     setMeta('meta[name="twitter:title"]', 'content', fullTitle);
     setMeta('meta[name="twitter:description"]', 'content', description);
     setMeta('link[rel="canonical"]', 'href', canonical);
-  }, [description, path, title]);
+  }, [description, path, profile.fullName, title]);
 
   return null;
 }

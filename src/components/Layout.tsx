@@ -1,8 +1,9 @@
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { profile } from '../data/profile';
+import { useProfile } from '../hooks/usePortfolioContent';
 import { useTheme } from '../hooks/useTheme';
+import { getProfilePhotoUrl } from '../lib/storage';
 import { Analytics } from './Analytics';
 import { CommandPalette } from './CommandPalette';
 import { ThemeToggle } from './ThemeToggle';
@@ -26,10 +27,13 @@ function ContentLoader() {
 }
 
 export function Layout() {
+  const { data: profile } = useProfile();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [isHeroPhotoVisible, setIsHeroPhotoVisible] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const mobileNavRef = useRef<HTMLDivElement>(null);
+  const profilePhotoUrl = getProfilePhotoUrl();
   const initials = useMemo(
     () =>
       profile.fullName
@@ -37,7 +41,7 @@ export function Layout() {
         .map((part) => part[0])
         .join('')
         .slice(0, 2),
-    [],
+    [profile.fullName],
   );
 
   useEffect(() => {
@@ -56,6 +60,23 @@ export function Layout() {
     observer.observe(heroPhoto);
     return () => observer.disconnect();
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isMobileNavOpen) {
+      return;
+    }
+
+    const closeOnOutsideTap = (event: PointerEvent) => {
+      if (mobileNavRef.current?.contains(event.target as Node)) {
+        return;
+      }
+
+      setIsMobileNavOpen(false);
+    };
+
+    window.addEventListener('pointerdown', closeOnOutsideTap);
+    return () => window.removeEventListener('pointerdown', closeOnOutsideTap);
+  }, [isMobileNavOpen]);
 
   const shouldShowProfilePhoto = location.pathname !== '/' || !isHeroPhotoVisible;
   const activeNavItem = navItems.find((item) => item.to === location.pathname) ?? navItems[0];
@@ -77,7 +98,7 @@ export function Layout() {
                 {shouldShowProfilePhoto ? (
                   <motion.img
                     key="profile-photo"
-                    src={profile.photo}
+                    src={profilePhotoUrl}
                     alt={profile.fullName}
                     initial={{ opacity: 0, scale: 0.82, rotate: -8 }}
                     animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -104,7 +125,7 @@ export function Layout() {
             </span>
           </NavLink>
 
-          <div className="hidden items-center gap-1 rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900 lg:flex">
+          <div className="hidden items-center gap-1 rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900 xl:flex">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
@@ -127,8 +148,8 @@ export function Layout() {
             <ThemeToggle theme={theme} onToggle={toggleTheme} />
           </div>
         </nav>
-        <div className="mx-auto max-w-7xl px-4 pb-4 sm:px-6 lg:hidden lg:px-8" aria-label="Mobile navigation">
-          <div className="relative">
+        <div className="mx-auto max-w-7xl px-4 pb-4 sm:px-6 lg:px-8 xl:hidden" aria-label="Mobile navigation">
+          <div ref={mobileNavRef} className="relative">
             <button
               type="button"
               className="flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-slate-100 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-white"
@@ -148,26 +169,41 @@ export function Layout() {
               </svg>
             </button>
 
-            {isMobileNavOpen ? (
-              <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-soft dark:border-slate-800 dark:bg-slate-950">
-                {navItems.map((item) => (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    onClick={() => setIsMobileNavOpen(false)}
-                    className={({ isActive }) =>
-                      `block rounded-xl px-3 py-2 text-sm font-semibold transition ${
-                        isActive
-                          ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950'
-                          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white'
-                      }`
-                    }
-                  >
-                    {item.label}
-                  </NavLink>
-                ))}
-              </div>
-            ) : null}
+            <AnimatePresence>
+              {isMobileNavOpen ? (
+                <motion.div
+                  initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                  transition={{ duration: 0.18, ease: 'easeOut' }}
+                  className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-soft dark:border-slate-800 dark:bg-slate-950"
+                >
+                  {navItems.map((item, index) => (
+                    <motion.div
+                      key={item.to}
+                      initial={{ opacity: 0, x: -6 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -4 }}
+                      transition={{ duration: 0.16, delay: index * 0.025, ease: 'easeOut' }}
+                    >
+                      <NavLink
+                        to={item.to}
+                        onClick={() => setIsMobileNavOpen(false)}
+                        className={({ isActive }) =>
+                          `block rounded-xl px-3 py-2 text-sm font-semibold transition ${
+                            isActive
+                              ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950'
+                              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white'
+                          }`
+                        }
+                      >
+                        {item.label}
+                      </NavLink>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
           </div>
         </div>
       </header>
@@ -180,7 +216,9 @@ export function Layout() {
 
       <footer className="border-t border-slate-200 bg-white py-8 dark:border-slate-800 dark:bg-slate-950">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 text-sm text-slate-500 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p>(c) {new Date().getFullYear()} {profile.fullName}. Built with React, TypeScript, Vite, and Tailwind CSS.</p>
+          <p>
+            &copy; {new Date().getFullYear()} {profile.fullName}
+          </p>
           <div className="flex gap-4">
             {profile.socials.map((social) => (
               <a key={social.label} href={social.href} className="font-semibold hover:text-brand-600 dark:hover:text-brand-300">
@@ -188,6 +226,7 @@ export function Layout() {
               </a>
             ))}
           </div>
+     
         </div>
       </footer>
     </div>

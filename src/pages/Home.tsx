@@ -4,11 +4,20 @@ import { PageTransition } from '../components/PageTransition';
 import { ProjectCard } from '../components/ProjectCard';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { achievements, profile, testimonials } from '../data/profile';
-import { projects } from '../data/projects';
+import { useAchievements, useProfile, useProjects, useTestimonials } from '../hooks/usePortfolioContent';
+import { getProfilePhotoUrl } from '../lib/storage';
 
 export default function Home() {
+  const { data: profile } = useProfile();
+  const { data: projects } = useProjects();
+  const { data: achievements } = useAchievements();
+  const { data: testimonials } = useTestimonials();
   const featuredProjects = projects.filter((project) => project.featured);
+  const hasStats = profile.stats.length > 0;
+  const hasFeaturedProjects = featuredProjects.length > 0;
+  const hasAchievements = achievements.length > 0;
+  const hasTestimonials = testimonials.length > 0;
+  const profilePhotoUrl = getProfilePhotoUrl();
 
   return (
     <PageTransition>
@@ -44,54 +53,62 @@ export default function Home() {
 
           <motion.div data-profile-hero initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.18 }} className="relative">
             <div className="absolute -inset-6 rounded-[3rem] bg-gradient-to-br from-brand-300/40 to-slate-900/10 blur-3xl dark:to-brand-800/40" />
-            <img src={profile.photo} alt={profile.fullName} className="relative mx-auto w-full max-w-md rounded-[2.5rem] border border-white/70 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900" />
+            <img src={profilePhotoUrl} alt={profile.fullName} className="relative mx-auto w-full max-w-md rounded-[2.5rem] border border-white/70 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900" />
           </motion.div>
         </div>
       </section>
 
-      <Section className="-mt-8 pt-0">
-        <div className="grid gap-4 sm:grid-cols-3">
-          {profile.stats.map((stat) => (
-            <div key={stat.label} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <p className="font-display text-4xl font-extrabold text-slate-950 dark:text-white">{stat.value}</p>
-              <p className="mt-2 text-sm font-semibold text-slate-500 dark:text-slate-400">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
+      {hasStats ? (
+        <Section className="relative z-10 -mt-8 pt-0">
+          <div className="grid gap-4 sm:grid-cols-3">
+            {profile.stats.map((stat) => (
+              <div key={stat.label} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                <p className="font-display text-4xl font-extrabold text-slate-950 dark:text-white">{stat.value}</p>
+                <p className="mt-2 text-sm font-semibold text-slate-500 dark:text-slate-400">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+      ) : null}
 
-      <Section eyebrow="Featured work" title="Selected products and platforms" description="A sample of recent projects focused on speed, reliability, user experience, and business outcomes.">
-        <div className="grid gap-6 lg:grid-cols-3">
-          {featuredProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-        </div>
-      </Section>
+      {hasFeaturedProjects ? (
+        <Section eyebrow="Featured work" title="Selected products and platforms" description="A sample of recent projects focused on speed, reliability, user experience, and business outcomes.">
+          <div className="grid gap-6 lg:grid-cols-3">
+            {featuredProjects.map((project) => (
+              <ProjectCard key={project.slug} project={project} />
+            ))}
+          </div>
+        </Section>
+      ) : null}
 
-      <Section eyebrow="Recent achievements" title="Measurable engineering impact">
-        <div className="grid gap-4 md:grid-cols-3">
-          {achievements.map((achievement) => (
-            <article key={achievement.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <p className="text-sm font-bold text-brand-700 dark:text-brand-300">{achievement.date}</p>
-              <h3 className="mt-3 font-display text-xl font-bold text-slate-950 dark:text-white">{achievement.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{achievement.description}</p>
-            </article>
-          ))}
-        </div>
-      </Section>
+      {hasAchievements ? (
+        <Section eyebrow="Recent achievements" title="Measurable engineering impact">
+          <div className="grid gap-4 md:grid-cols-3">
+            {achievements.map((achievement) => (
+              <article key={achievement.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                <p className="text-sm font-bold text-brand-700 dark:text-brand-300">{achievement.date}</p>
+                <h3 className="mt-3 font-display text-xl font-bold text-slate-950 dark:text-white">{achievement.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{achievement.description}</p>
+              </article>
+            ))}
+          </div>
+        </Section>
+      ) : null}
 
-      <Section eyebrow="Testimonials" title="Recommendations from collaborators">
-        <div className="grid gap-6 md:grid-cols-2">
-          {testimonials.map((testimonial) => (
-            <blockquote key={testimonial.author} className="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <p className="text-lg leading-8 text-slate-700 dark:text-slate-200">"{testimonial.quote}"</p>
-              <footer className="mt-5 text-sm font-semibold text-slate-500 dark:text-slate-400">
-                {testimonial.author}, {testimonial.role}
-              </footer>
-            </blockquote>
-          ))}
-        </div>
-      </Section>
+      {hasTestimonials ? (
+        <Section eyebrow="Testimonials" title="Recommendations from collaborators">
+          <div className="grid gap-6 md:grid-cols-2">
+            {testimonials.map((testimonial) => (
+              <blockquote key={testimonial.author} className="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                <p className="text-lg leading-8 text-slate-700 dark:text-slate-200">"{testimonial.quote}"</p>
+                <footer className="mt-5 text-sm font-semibold text-slate-500 dark:text-slate-400">
+                  {testimonial.author}, {testimonial.role}
+                </footer>
+              </blockquote>
+            ))}
+          </div>
+        </Section>
+      ) : null}
     </PageTransition>
   );
 }
