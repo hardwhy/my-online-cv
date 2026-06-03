@@ -50,12 +50,12 @@ export default function ProjectDetail() {
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
               {project.githubUrl !== '#' && (
-                <a href={project.githubUrl} className="btn-primary">
+                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">
                   View GitHub
                 </a>
               )}
               {project.liveUrl !== '#' && (
-                <a href={project.liveUrl} className="btn-secondary">
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary">
                   View reference
                 </a>
               )}
