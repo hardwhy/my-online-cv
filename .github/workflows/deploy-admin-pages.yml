@@ -25,6 +25,8 @@ concurrency:
 
 jobs:
   build-and-deploy:
+    environment:
+      name: github-pages
     runs-on: ubuntu-latest
     env:
       VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
