@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { profile } from '../data/profile';
+import { useProfile } from '../hooks/usePortfolioContent';
 import { useTheme } from '../hooks/useTheme';
 import { Analytics } from './Analytics';
 import { CommandPalette } from './CommandPalette';
@@ -26,6 +26,7 @@ function ContentLoader() {
 }
 
 export function Layout() {
+  const { data: profile } = useProfile();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [isHeroPhotoVisible, setIsHeroPhotoVisible] = useState(false);
@@ -37,7 +38,7 @@ export function Layout() {
         .map((part) => part[0])
         .join('')
         .slice(0, 2),
-    [],
+    [profile.fullName],
   );
 
   useEffect(() => {
