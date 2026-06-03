@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@portfolio/shared-services": ["packages/shared-services/src/index.ts"],
+      "@portfolio/shared-types": ["packages/shared-types/src/index.ts"],
+      "@portfolio/shared-ui": ["packages/shared-ui/src/index.ts"],
+      "@portfolio/supabase": ["packages/supabase/src/index.ts"]
+    }
+  }
+}

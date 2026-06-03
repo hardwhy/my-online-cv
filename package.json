@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "lint": "eslint ."
+    "dev": "nx serve web",
+    "build": "nx build web",
+    "preview": "nx preview web",
+    "lint": "nx lint web"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.78.0",
@@ -19,6 +19,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@nx/js": "^22.7.5",
+    "@nx/react": "^22.7.5",
+    "@nx/vite": "^22.7.5",
+    "@types/node": "^25.9.1",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.7.0",
@@ -27,6 +31,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
+    "nx": "^22.7.5",
     "postcss": "^8.5.15",
     "tailwindcss": "^3.4.19",
     "typescript": "^6.0.3",
