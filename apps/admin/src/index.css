@@ -9,7 +9,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   min-width: 320px;
+}
+
+::selection {
+  background: #67e8f9;
+  color: #0f172a;
 }
