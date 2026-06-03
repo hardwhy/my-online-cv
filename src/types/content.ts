@@ -64,7 +64,8 @@ export type Certification = {
   issuer: string;
   issueDate: string;
   credentialUrl: string;
-  downloadUrl: string;
+  downloadUrl?: string;
+  imageUrl?: string;
 };
 
 export type Achievement = {
