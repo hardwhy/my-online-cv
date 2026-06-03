@@ -5,6 +5,7 @@ import { ProjectCard } from '../components/ProjectCard';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
 import { useAchievements, useProfile, useProjects, useTestimonials } from '../hooks/usePortfolioContent';
+import { getProfilePhotoUrl } from '../lib/storage';
 
 export default function Home() {
   const { data: profile } = useProfile();
@@ -16,6 +17,7 @@ export default function Home() {
   const hasFeaturedProjects = featuredProjects.length > 0;
   const hasAchievements = achievements.length > 0;
   const hasTestimonials = testimonials.length > 0;
+  const profilePhotoUrl = getProfilePhotoUrl();
 
   return (
     <PageTransition>
@@ -51,7 +53,7 @@ export default function Home() {
 
           <motion.div data-profile-hero initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.18 }} className="relative">
             <div className="absolute -inset-6 rounded-[3rem] bg-gradient-to-br from-brand-300/40 to-slate-900/10 blur-3xl dark:to-brand-800/40" />
-            <img src={profile.photo} alt={profile.fullName} className="relative mx-auto w-full max-w-md rounded-[2.5rem] border border-white/70 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900" />
+            <img src={profilePhotoUrl} alt={profile.fullName} className="relative mx-auto w-full max-w-md rounded-[2.5rem] border border-white/70 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900" />
           </motion.div>
         </div>
       </section>

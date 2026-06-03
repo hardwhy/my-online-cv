@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Project } from '../types/content';
+import { getProjectThumbnailUrl } from '../lib/storage';
 import { ProjectVisual } from './ProjectVisual';
 
 type ProjectCardProps = {
@@ -7,12 +8,14 @@ type ProjectCardProps = {
 };
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const thumbnailUrl = getProjectThumbnailUrl(project.slug);
+
   return (
     <article className="group overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-soft dark:border-slate-800 dark:bg-slate-900/80">
       <div className="aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
         <ProjectVisual
           project={project}
-          imageSrc={project.thumbnail}
+          imageSrc={thumbnailUrl}
           className="h-full w-full transition duration-500 group-hover:scale-105"
           imageClassName="h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
         />

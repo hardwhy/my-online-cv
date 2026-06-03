@@ -4,6 +4,7 @@ import { ProjectVisual } from '../components/ProjectVisual';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
 import { useProject } from '../hooks/usePortfolioContent';
+import { getProjectThumbnailUrl } from '../lib/storage';
 
 export default function ProjectDetail() {
   const { slug } = useParams();
@@ -21,6 +22,8 @@ export default function ProjectDetail() {
     return <Navigate to="/projects" replace />;
   }
 
+  const thumbnailUrl = getProjectThumbnailUrl(project.slug);
+
   return (
     <PageTransition>
       <Seo title={project.title} description={project.description} path={`/projects/${project.slug}`} />
@@ -29,7 +32,7 @@ export default function ProjectDetail() {
           <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900">
             <ProjectVisual
               project={project}
-              imageSrc={project.screenshots?.[0] || project.thumbnail}
+              imageSrc={thumbnailUrl}
               className="aspect-[16/10] w-full"
               imageClassName="aspect-[16/10] w-full object-cover"
             />

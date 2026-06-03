@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useProfile } from '../hooks/usePortfolioContent';
 import { useTheme } from '../hooks/useTheme';
+import { getProfilePhotoUrl } from '../lib/storage';
 import { Analytics } from './Analytics';
 import { CommandPalette } from './CommandPalette';
 import { ThemeToggle } from './ThemeToggle';
@@ -31,6 +32,7 @@ export function Layout() {
   const location = useLocation();
   const [isHeroPhotoVisible, setIsHeroPhotoVisible] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const profilePhotoUrl = getProfilePhotoUrl();
   const initials = useMemo(
     () =>
       profile.fullName
@@ -78,7 +80,7 @@ export function Layout() {
                 {shouldShowProfilePhoto ? (
                   <motion.img
                     key="profile-photo"
-                    src={profile.photo}
+                    src={profilePhotoUrl}
                     alt={profile.fullName}
                     initial={{ opacity: 0, scale: 0.82, rotate: -8 }}
                     animate={{ opacity: 1, scale: 1, rotate: 0 }}
