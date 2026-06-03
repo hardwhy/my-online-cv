@@ -10,12 +10,20 @@ export default defineConfig({
   root: appRoot,
   plugins: [react()],
   server: {
-    port: 9000,
+    port: 9001,
     strictPort: true,
   },
   preview: {
-    port: 9000,
+    port: 9001,
     strictPort: true,
+  },
+  resolve: {
+    alias: {
+      '@portfolio/shared-services': resolve(appRoot, '../../packages/shared-services/src/index.ts'),
+      '@portfolio/shared-types': resolve(appRoot, '../../packages/shared-types/src/index.ts'),
+      '@portfolio/shared-ui': resolve(appRoot, '../../packages/shared-ui/src/index.ts'),
+      '@portfolio/supabase': resolve(appRoot, '../../packages/supabase/src/index.ts'),
+    },
   },
   css: {
     postcss: resolve(appRoot, '../../postcss.config.js'),
@@ -23,12 +31,12 @@ export default defineConfig({
   build: {
     cssCodeSplit: true,
     emptyOutDir: true,
-    outDir: resolve(appRoot, '../../dist/apps/web'),
+    outDir: resolve(appRoot, '../../dist/apps/admin'),
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          motion: ['framer-motion'],
+          supabase: ['@supabase/supabase-js'],
         },
       },
     },
