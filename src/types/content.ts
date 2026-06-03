@@ -15,7 +15,6 @@ export type Profile = {
   location: string;
   email: string;
   phone?: string;
-  photo: string;
   resumeUrl: string;
   socials: SocialLink[];
   stats: Stat[];
@@ -51,8 +50,6 @@ export type Project = {
   category: ProjectCategory;
   description: string;
   impact: string;
-  thumbnail?: string;
-  screenshots?: string[];
   technologies: string[];
   githubUrl: string;
   liveUrl: string;
