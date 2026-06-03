@@ -9,6 +9,14 @@ export default defineConfig({
   base: './',
   root: appRoot,
   plugins: [react()],
+  server: {
+    port: 9001,
+    strictPort: true,
+  },
+  preview: {
+    port: 9001,
+    strictPort: true,
+  },
   resolve: {
     alias: {
       '@portfolio/shared-services': resolve(appRoot, '../../packages/shared-services/src/index.ts'),

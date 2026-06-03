@@ -9,6 +9,14 @@ export default defineConfig({
   base: './',
   root: appRoot,
   plugins: [react()],
+  server: {
+    port: 9000,
+    strictPort: true,
+  },
+  preview: {
+    port: 9000,
+    strictPort: true,
+  },
   css: {
     postcss: resolve(appRoot, '../../postcss.config.js'),
   },
