@@ -59,7 +59,7 @@ export default function Home() {
       </section>
 
       {hasStats ? (
-        <Section className="-mt-8 pt-0">
+        <Section className="relative z-10 -mt-8 pt-0">
           <div className="grid gap-4 sm:grid-cols-3">
             {profile.stats.map((stat) => (
               <div key={stat.label} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type CommandPaletteProps = {
   navItems: Array<{ label: string; to: string }>;
@@ -45,10 +46,30 @@ export function CommandPalette({ navItems }: CommandPaletteProps) {
     setQuery('');
   };
 
-  const palette = isOpen
-    ? createPortal(
-        <div className="fixed inset-0 z-[9999] min-h-dvh bg-slate-950/70 px-4 py-24 backdrop-blur-sm" role="dialog" aria-modal="true">
-          <div className="mx-auto max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900">
+  const palette = createPortal(
+    <AnimatePresence>
+      {isOpen ? (
+        <motion.div
+          className="fixed inset-0 z-[9999] min-h-dvh bg-slate-950/70 px-4 py-24 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18, ease: 'easeOut' }}
+          onPointerDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setIsOpen(false);
+            }
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: -12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.97, y: -8 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="mx-auto max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900"
+          >
             <div className="border-b border-slate-200 p-4 dark:border-slate-800">
               <label htmlFor="command-search" className="sr-only">
                 Search pages
@@ -76,22 +97,23 @@ export function CommandPalette({ navItems }: CommandPaletteProps) {
               ))}
               {filteredItems.length === 0 && <p className="px-4 py-6 text-sm text-slate-500">No matching pages found.</p>}
             </div>
-          </div>
-        </div>,
-        document.body,
-      )
-    : null;
+          </motion.div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>,
+    document.body,
+  );
 
   return (
     <>
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="hidden h-10 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-500 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-brand-400 dark:hover:text-brand-200 dark:focus:ring-offset-slate-950 sm:inline-flex"
+        className="hidden h-10 shrink-0 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-500 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-brand-400 dark:hover:text-brand-200 dark:focus:ring-offset-slate-950 sm:inline-flex"
         aria-label="Open command palette"
       >
         <span>Search</span>
-        <kbd className="rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-500 dark:bg-slate-800 dark:text-slate-400">Cmd K</kbd>
+        <kbd className="whitespace-nowrap rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-500 dark:bg-slate-800 dark:text-slate-400">Cmd K</kbd>
       </button>
 
       {palette}
