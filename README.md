@@ -1,6 +1,6 @@
 # Senior Engineer Portfolio
 
-A modern, responsive personal CV and portfolio application built with React, TypeScript, Vite, Tailwind CSS, Framer Motion, and React Router.
+A modern, responsive personal CV and portfolio application built with React, TypeScript, Vite, Tailwind CSS, Framer Motion, React Router, and Supabase.
 
 ## Features
 
@@ -24,6 +24,8 @@ A modern, responsive personal CV and portfolio application built with React, Typ
 - Tailwind CSS
 - Framer Motion
 - React Router
+- React Query
+- Supabase
 
 ## Getting Started
 
@@ -31,6 +33,8 @@ A modern, responsive personal CV and portfolio application built with React, Typ
 npm install
 npm run dev
 ```
+
+For switchable content sources, copy `.env.example` to `.env.local`. Keep `VITE_CONTENT_SOURCE=static` while testing the existing static data, then use `VITE_CONTENT_SOURCE=supabase` to test Supabase-backed content. See `docs/supabase.md` for the database schema, storage layout, environment guidance, and migration notes.
 
 Build for production:
 
@@ -70,10 +74,16 @@ The Vite build uses relative asset paths, so it works whether the repository is 
 ```text
 src/
   components/       Reusable layout, cards, animation, SEO, and UI elements
-  data/             Editable typed portfolio content
-  hooks/            Theme and interaction hooks
+  data/             Static fallback portfolio content
+  hooks/            Theme, interaction, and portfolio query hooks
+  lib/              Supabase and React Query clients
   pages/            Routed page views
+  services/         Supabase portfolio data access and mappers
   types/            Shared TypeScript interfaces
+docs/
+  supabase.md       Supabase setup and migration notes
+  supabase-schema.sql
+  supabase-seed.sql
 public/
   assets/           Optimized SVG profile, previews, favicon, and OG image
   cv/               Downloadable CV and certificate placeholders
@@ -81,7 +91,7 @@ public/
 
 ## Customization
 
-Update the sample portfolio content in:
+Portfolio content can be loaded from Supabase or from the static fallback files. During migration, keep these files available for local testing and fallback content:
 
 - `src/data/profile.ts`
 - `src/data/experiences.ts`
