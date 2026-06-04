@@ -1,6 +1,6 @@
 import { FormEvent, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { adminTableConfigs, listAdminRecords, resolveStoragePath, storageUploadTargets, uploadPortfolioAsset } from '@portfolio/shared-services';
+import { adminTableConfigs, listAdminRecords, removePortfolioAsset, resolveStoragePath, storageUploadTargets, uploadPortfolioAsset } from '@portfolio/shared-services';
 import type { AdminRecord, AdminTableName, StorageTargetKind, StorageUploadTarget } from '@portfolio/shared-types';
 import { AdminSelect } from '../../components/AdminDropdown';
 import { adminSupabase } from '../../lib/supabase';
@@ -67,6 +67,14 @@ export function StorageAdmin() {
     },
     onSuccess: (result) => {
       setUploadResult(result);
+      setFile(null);
+    },
+  });
+
+  const removeMutation = useMutation({
+    mutationFn: () => removePortfolioAsset(adminSupabase, target, slug),
+    onSuccess: () => {
+      setUploadResult(null);
       setFile(null);
     },
   });
@@ -145,6 +153,7 @@ export function StorageAdmin() {
         </div>
 
         {uploadMutation.error ? <p className="mt-4 rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-100">{uploadMutation.error.message}</p> : null}
+        {removeMutation.error ? <p className="mt-4 rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-100">{removeMutation.error.message}</p> : null}
         {uploadResult ? (
           <div className="mt-4 rounded-xl border border-emerald-300 bg-emerald-50 p-3 text-sm text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-100">
             <p className="font-semibold">Upload complete</p>
@@ -152,9 +161,21 @@ export function StorageAdmin() {
           </div>
         ) : null}
 
-        <button className="mt-6 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-700 disabled:opacity-60 dark:bg-brand-300 dark:text-slate-950" type="submit" disabled={uploadMutation.isPending}>
-          {uploadMutation.isPending ? 'Uploading...' : 'Upload asset'}
-        </button>
+        <div className="mt-6 flex flex-wrap gap-2">
+          <button className="rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-700 disabled:opacity-60 dark:bg-brand-300 dark:text-slate-950" type="submit" disabled={uploadMutation.isPending}>
+            {uploadMutation.isPending ? 'Uploading...' : 'Upload asset'}
+          </button>
+          <button
+            className="rounded-full border border-red-200 px-5 py-3 text-sm font-bold text-red-600 transition hover:bg-red-50 disabled:opacity-60 dark:border-red-400/30 dark:text-red-200 dark:hover:bg-red-400/10"
+            type="button"
+            disabled={removeMutation.isPending || (target.requiresSlug && !slug)}
+            onClick={() => {
+              if (window.confirm(`Remove ${target.label}?`)) removeMutation.mutate();
+            }}
+          >
+            {removeMutation.isPending ? 'Removing...' : 'Remove asset'}
+          </button>
+        </div>
       </form>
     </section>
   );
