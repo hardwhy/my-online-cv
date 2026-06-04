@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { KeyboardEvent, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PageTransition } from '../components/PageTransition';
 import { ProjectCard } from '../components/ProjectCard';
@@ -7,6 +7,127 @@ import { Seo } from '../components/Seo';
 import { projectCategories, useProjects } from '../hooks/usePortfolioContent';
 
 type ProjectCategoryFilter = (typeof projectCategories)[number];
+
+function ProjectFilterSelect({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (value: string) => void;
+}) {
+  const id = useId();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(Math.max(options.indexOf(value), 0));
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const close = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setIsOpen(false);
+    };
+
+    window.addEventListener('pointerdown', close);
+    return () => window.removeEventListener('pointerdown', close);
+  }, [isOpen]);
+
+  const choose = (nextValue: string) => {
+    onChange(nextValue);
+    setIsOpen(false);
+    triggerRef.current?.focus();
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (!isOpen && ['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(event.key)) {
+      event.preventDefault();
+      setActiveIndex(Math.max(options.indexOf(value), 0));
+      setIsOpen(true);
+      return;
+    }
+
+    if (!isOpen) return;
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setIsOpen(false);
+      triggerRef.current?.focus();
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveIndex((current) => Math.min(current + 1, options.length - 1));
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveIndex((current) => Math.max(current - 1, 0));
+      return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      choose(options[activeIndex]);
+    }
+  };
+
+  return (
+    <div ref={rootRef} className="relative">
+      <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">{label}</span>
+      <button
+        ref={triggerRef}
+        className="flex h-12 w-full items-center justify-between gap-3 rounded-full border border-slate-200 bg-slate-50 px-4 text-left text-sm font-semibold text-slate-700 outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:focus:ring-brand-950"
+        type="button"
+        role="combobox"
+        aria-controls={`${id}-listbox`}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+        onClick={() => setIsOpen((current) => !current)}
+        onKeyDown={handleKeyDown}
+      >
+        <span className="truncate">{value}</span>
+        <svg className={`h-4 w-4 shrink-0 text-slate-400 transition ${isOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {isOpen ? (
+        <div className="absolute left-0 right-0 top-full z-40 mt-2 max-h-72 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-soft dark:border-slate-800 dark:bg-slate-950" id={`${id}-listbox`} role="listbox" aria-label={label}>
+          {options.map((option, index) => {
+            const isSelected = option === value;
+            const isActive = index === activeIndex;
+
+            return (
+              <button
+                key={option}
+                className={`block w-full rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
+                  isSelected
+                    ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950'
+                    : isActive
+                      ? 'bg-slate-100 text-slate-950 dark:bg-slate-900 dark:text-white'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white'
+                }`}
+                type="button"
+                role="option"
+                aria-selected={isSelected}
+                onMouseEnter={() => setActiveIndex(index)}
+                onClick={() => choose(option)}
+              >
+                {option}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 export default function Projects() {
   const { data: projects } = useProjects();
@@ -109,44 +230,8 @@ export default function Projects() {
                 ) : null}
               </span>
             </label>
-            <label className="block">
-              <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Category</span>
-              <span className="relative block">
-                <select
-                  value={category}
-                  onChange={(event) => updateFilter('category', event.target.value)}
-                  className="h-12 w-full appearance-none rounded-full border border-slate-200 bg-slate-50 px-4 pr-11 text-sm font-semibold text-slate-700 outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:focus:ring-brand-950"
-                >
-                  {projectCategories.map((item) => (
-                    <option key={item}>{item}</option>
-                  ))}
-                </select>
-                <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400 dark:text-slate-500" aria-hidden="true">
-                  <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none">
-                    <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-              </span>
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-xs font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Technology</span>
-              <span className="relative block">
-                <select
-                  value={technology}
-                  onChange={(event) => updateFilter('technology', event.target.value)}
-                  className="h-12 w-full appearance-none rounded-full border border-slate-200 bg-slate-50 px-4 pr-11 text-sm font-semibold text-slate-700 outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:focus:ring-brand-950"
-                >
-                  {technologies.map((item) => (
-                    <option key={item}>{item}</option>
-                  ))}
-                </select>
-                <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400 dark:text-slate-500" aria-hidden="true">
-                  <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none">
-                    <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-              </span>
-            </label>
+            <ProjectFilterSelect label="Category" value={category} options={[...projectCategories]} onChange={(nextValue) => updateFilter('category', nextValue)} />
+            <ProjectFilterSelect label="Technology" value={technology} options={technologies} onChange={(nextValue) => updateFilter('technology', nextValue)} />
           </div>
 
           <div ref={resultsRef} className="scroll-mt-28">
