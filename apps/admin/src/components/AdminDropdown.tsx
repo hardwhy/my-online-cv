@@ -67,11 +67,13 @@ export function AdminSelect({
 }: AdminSelectProps) {
   const id = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
   const selectedOption = options.find((option) => option.value === value);
   const visibleOptions = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -87,12 +89,31 @@ export function AdminSelect({
   useEffect(() => {
     if (!isOpen) return;
 
+    const updatePosition = () => {
+      const trigger = triggerRef.current?.getBoundingClientRect();
+      if (!trigger) return;
+      setPosition({
+        top: trigger.bottom + 8,
+        left: trigger.left,
+        width: trigger.width,
+      });
+    };
+
+    updatePosition();
+
     const closeOnOutsidePointer = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setIsOpen(false);
+      if (rootRef.current?.contains(event.target as Node) || panelRef.current?.contains(event.target as Node)) return;
+      setIsOpen(false);
     };
 
     window.addEventListener('pointerdown', closeOnOutsidePointer);
-    return () => window.removeEventListener('pointerdown', closeOnOutsidePointer);
+    window.addEventListener('scroll', updatePosition, true);
+    window.addEventListener('resize', updatePosition);
+    return () => {
+      window.removeEventListener('pointerdown', closeOnOutsidePointer);
+      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener('resize', updatePosition);
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -173,8 +194,9 @@ export function AdminSelect({
           <Chevron isOpen={isOpen} />
         </button>
 
-        {isOpen ? (
-          <div className={`${panelClasses} absolute left-0 right-0 top-full mt-2`}>
+        {isOpen
+          ? createPortal(
+          <div ref={panelRef} className={`${panelClasses} fixed`} style={{ top: position.top, left: position.left, width: position.width }}>
             {searchable ? (
               <div className="border-b border-slate-200 p-2 dark:border-slate-800">
                 <input
@@ -226,8 +248,10 @@ export function AdminSelect({
 
               {visibleOptions.length === 0 ? <p className="px-3 py-2 text-sm font-medium text-slate-500 dark:text-slate-400">{emptyLabel}</p> : null}
             </div>
-          </div>
-        ) : null}
+          </div>,
+          document.body,
+        )
+          : null}
       </div>
     </div>
   );
