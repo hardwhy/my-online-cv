@@ -6,7 +6,7 @@ export const adminTableConfigs: AdminTableConfig[] = [
     name: 'site_profile',
     label: 'Profile',
     description: 'Home, about, contact, socials, and profile summary content.',
-    orderBy: 'updated_at',
+    orderBy: 'full_name',
     supportsDelete: false,
     fields: [
       { column: 'full_name', label: 'Full name', kind: 'text', required: true },
@@ -16,8 +16,8 @@ export const adminTableConfigs: AdminTableConfig[] = [
       { column: 'email', label: 'Email', kind: 'text', required: true },
       { column: 'phone', label: 'Phone', kind: 'text' },
       { column: 'resume_url', label: 'Resume URL', kind: 'text' },
-      { column: 'socials', label: 'Social links JSON', kind: 'json', defaultValue: [] },
-      { column: 'stats', label: 'Stats JSON', kind: 'json', defaultValue: [] },
+      { column: 'socials', label: 'Social links', kind: 'json', defaultValue: [] },
+      { column: 'stats', label: 'Stats', kind: 'json', defaultValue: [] },
       { column: 'strengths', label: 'Strengths', kind: 'array', defaultValue: [] },
       { column: 'interests', label: 'Interests', kind: 'array', defaultValue: [] },
       { column: 'is_published', label: 'Published', kind: 'boolean', defaultValue: true },
@@ -27,13 +27,12 @@ export const adminTableConfigs: AdminTableConfig[] = [
     name: 'skills',
     label: 'Skills',
     description: 'Skills grouped by category and ordered by sort order.',
-    orderBy: 'sort_order',
+    orderBy: 'name',
     fields: [
       { column: 'name', label: 'Name', kind: 'text', required: true },
       { column: 'category', label: 'Category', kind: 'select', required: true, options: ['Frontend', 'Backend', 'Database', 'Tools'] },
       { column: 'proficiency', label: 'Proficiency', kind: 'number', required: true, defaultValue: 80 },
       { column: 'description', label: 'Description', kind: 'textarea' },
-      { column: 'sort_order', label: 'Sort order', kind: 'number', defaultValue: 0 },
       { column: 'is_published', label: 'Published', kind: 'boolean', defaultValue: true },
     ],
   },
@@ -41,7 +40,7 @@ export const adminTableConfigs: AdminTableConfig[] = [
     name: 'experiences',
     label: 'Work Experience',
     description: 'Professional experience timeline content.',
-    orderBy: 'sort_order',
+    orderBy: 'company',
     fields: [
       { column: 'company', label: 'Company', kind: 'text', required: true },
       { column: 'position', label: 'Position', kind: 'text', required: true },
@@ -51,7 +50,6 @@ export const adminTableConfigs: AdminTableConfig[] = [
       { column: 'responsibilities', label: 'Responsibilities', kind: 'array', defaultValue: [] },
       { column: 'achievements', label: 'Achievements', kind: 'array', defaultValue: [] },
       { column: 'technologies', label: 'Technologies', kind: 'array', defaultValue: [] },
-      { column: 'sort_order', label: 'Sort order', kind: 'number', defaultValue: 0 },
       { column: 'is_published', label: 'Published', kind: 'boolean', defaultValue: true },
     ],
   },
@@ -59,7 +57,7 @@ export const adminTableConfigs: AdminTableConfig[] = [
     name: 'projects',
     label: 'Projects',
     description: 'Portfolio project cards and detail pages.',
-    orderBy: 'sort_order',
+    orderBy: 'title',
     fields: [
       { column: 'slug', label: 'Slug', kind: 'text', required: true },
       { column: 'title', label: 'Title', kind: 'text', required: true },
@@ -70,7 +68,6 @@ export const adminTableConfigs: AdminTableConfig[] = [
       { column: 'github_url', label: 'GitHub URL', kind: 'text' },
       { column: 'live_url', label: 'Live URL', kind: 'text' },
       { column: 'featured', label: 'Featured', kind: 'boolean', defaultValue: false },
-      { column: 'sort_order', label: 'Sort order', kind: 'number', defaultValue: 0 },
       { column: 'is_published', label: 'Published', kind: 'boolean', defaultValue: true },
     ],
   },
@@ -78,7 +75,7 @@ export const adminTableConfigs: AdminTableConfig[] = [
     name: 'certifications',
     label: 'Certificates',
     description: 'Certificates, credentials, downloads, and preview URLs.',
-    orderBy: 'sort_order',
+    orderBy: 'name',
     fields: [
       { column: 'name', label: 'Name', kind: 'text', required: true },
       { column: 'issuer', label: 'Issuer', kind: 'text', required: true },
@@ -86,7 +83,6 @@ export const adminTableConfigs: AdminTableConfig[] = [
       { column: 'credential_url', label: 'Credential URL', kind: 'text' },
       { column: 'download_url', label: 'Download URL', kind: 'text' },
       { column: 'image_url', label: 'Image URL', kind: 'text' },
-      { column: 'sort_order', label: 'Sort order', kind: 'number', defaultValue: 0 },
       { column: 'is_published', label: 'Published', kind: 'boolean', defaultValue: true },
     ],
   },
@@ -94,12 +90,11 @@ export const adminTableConfigs: AdminTableConfig[] = [
     name: 'achievements',
     label: 'Achievements',
     description: 'Short achievement entries used in profile sections.',
-    orderBy: 'sort_order',
+    orderBy: 'title',
     fields: [
       { column: 'title', label: 'Title', kind: 'text', required: true },
       { column: 'description', label: 'Description', kind: 'textarea', required: true },
       { column: 'date', label: 'Date', kind: 'text', required: true },
-      { column: 'sort_order', label: 'Sort order', kind: 'number', defaultValue: 0 },
       { column: 'is_published', label: 'Published', kind: 'boolean', defaultValue: true },
     ],
   },
@@ -107,12 +102,11 @@ export const adminTableConfigs: AdminTableConfig[] = [
     name: 'testimonials',
     label: 'Testimonials',
     description: 'Quotes and references for future public display.',
-    orderBy: 'sort_order',
+    orderBy: 'author',
     fields: [
       { column: 'quote', label: 'Quote', kind: 'textarea', required: true },
       { column: 'author', label: 'Author', kind: 'text', required: true },
       { column: 'role', label: 'Role', kind: 'text', required: true },
-      { column: 'sort_order', label: 'Sort order', kind: 'number', defaultValue: 0 },
       { column: 'is_published', label: 'Published', kind: 'boolean', defaultValue: true },
     ],
   },
@@ -120,7 +114,7 @@ export const adminTableConfigs: AdminTableConfig[] = [
     name: 'blog_posts',
     label: 'Blog Posts',
     description: 'Future blog content with tags and markdown/plain text content.',
-    orderBy: 'sort_order',
+    orderBy: 'title',
     fields: [
       { column: 'slug', label: 'Slug', kind: 'text', required: true },
       { column: 'title', label: 'Title', kind: 'text', required: true },
@@ -128,7 +122,6 @@ export const adminTableConfigs: AdminTableConfig[] = [
       { column: 'tags', label: 'Tags', kind: 'array', defaultValue: [] },
       { column: 'excerpt', label: 'Excerpt', kind: 'textarea', required: true },
       { column: 'content', label: 'Content', kind: 'textarea', required: true },
-      { column: 'sort_order', label: 'Sort order', kind: 'number', defaultValue: 0 },
       { column: 'is_published', label: 'Published', kind: 'boolean', defaultValue: true },
     ],
   },
@@ -193,7 +186,7 @@ export async function listAdminRecords(client: SupabaseClient | null, config: Ad
   let query = ensureClient(client).from(config.name).select('*');
 
   if (config.orderBy) {
-    query = query.order(config.orderBy, { ascending: config.orderBy !== 'updated_at' });
+    query = query.order(config.orderBy, { ascending: true });
   }
 
   const { data, error } = await query;
@@ -243,4 +236,12 @@ export async function uploadPortfolioAsset(client: SupabaseClient | null, target
     path,
     publicUrl: data.publicUrl,
   };
+}
+
+export async function removePortfolioAsset(client: SupabaseClient | null, target: StorageUploadTarget, slug?: string) {
+  const supabase = ensureClient(client);
+  const path = resolveStoragePath(target, slug);
+  const { error } = await supabase.storage.from(target.bucket).remove([path]);
+  if (error) throw error;
+  return { path };
 }
