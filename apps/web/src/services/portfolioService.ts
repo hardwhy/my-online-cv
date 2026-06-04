@@ -169,7 +169,7 @@ export async function getSkills(): Promise<Skill[]> {
     .from('skills')
     .select('name,category,proficiency,description')
     .eq('is_published', true)
-    .order('sort_order', { ascending: true });
+    .order('name', { ascending: true });
 
   if (error) throw error;
   return (data as SkillRow[]).map(mapSkill);
@@ -182,7 +182,7 @@ export async function getExperiences(): Promise<Experience[]> {
     .from('experiences')
     .select('company,position,duration,location,summary,responsibilities,achievements,technologies')
     .eq('is_published', true)
-    .order('sort_order', { ascending: true });
+    .order('company', { ascending: true });
 
   if (error) throw error;
   return (data as ExperienceRow[]).map(mapExperience);
@@ -195,7 +195,7 @@ export async function getProjects(): Promise<Project[]> {
     .from('projects')
     .select('slug,title,category,description,impact,technologies,github_url,live_url,featured')
     .eq('is_published', true)
-    .order('sort_order', { ascending: true });
+    .order('title', { ascending: true });
 
   if (error) throw error;
   return (data as ProjectRow[]).map(mapProject);
@@ -208,7 +208,7 @@ export async function getCertifications(): Promise<Certification[]> {
     .from('certifications')
     .select('name,issuer,issue_date,credential_url,download_url,image_url')
     .eq('is_published', true)
-    .order('sort_order', { ascending: true });
+    .order('name', { ascending: true });
 
   if (error) throw error;
   return (data as CertificationRow[]).map(mapCertification);
@@ -221,7 +221,7 @@ export async function getAchievements(): Promise<Achievement[]> {
     .from('achievements')
     .select('title,description,date')
     .eq('is_published', true)
-    .order('sort_order', { ascending: true });
+    .order('title', { ascending: true });
 
   if (error) throw error;
   return (data as AchievementRow[]).map((row) => ({ ...row }));
@@ -234,7 +234,7 @@ export async function getTestimonials(): Promise<Testimonial[]> {
     .from('testimonials')
     .select('quote,author,role')
     .eq('is_published', true)
-    .order('sort_order', { ascending: true });
+    .order('author', { ascending: true });
 
   if (error) throw error;
   return (data as TestimonialRow[]).map((row) => ({ ...row }));
@@ -247,7 +247,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     .from('blog_posts')
     .select('slug,title,date,tags,excerpt,content')
     .eq('is_published', true)
-    .order('sort_order', { ascending: true });
+    .order('title', { ascending: true });
 
   if (error) throw error;
   return (data as BlogPostRow[]).map(mapBlogPost);
