@@ -4,7 +4,6 @@ import { useTheme } from '../hooks/useTheme';
 
 const navItems = [
   { to: '/', label: 'Content' },
-  { to: '/storage', label: 'Storage' },
 ];
 
 function SunIcon() {
@@ -46,23 +45,25 @@ export function AdminLayout() {
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{user?.email}</p>
           </div>
           <nav className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900">
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.to}
-                  className={({ isActive }) =>
-                    `rounded-full px-4 py-2 text-sm font-semibold transition ${
-                      isActive
-                        ? 'bg-white text-brand-700 shadow-sm dark:bg-slate-800 dark:text-brand-200'
-                        : 'text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white'
-                    }`
-                  }
-                  to={item.to}
-                >
-                  {item.label}
-                </NavLink>
-              ))}
-            </div>
+            {navItems.length > 1 ? (
+              <div className="flex items-center gap-1 rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900">
+                {navItems.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    className={({ isActive }) =>
+                      `rounded-full px-4 py-2 text-sm font-semibold transition ${
+                        isActive
+                          ? 'bg-white text-brand-700 shadow-sm dark:bg-slate-800 dark:text-brand-200'
+                          : 'text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white'
+                      }`
+                    }
+                    to={item.to}
+                  >
+                    {item.label}
+                  </NavLink>
+                ))}
+              </div>
+            ) : null}
             <button
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-brand-400 dark:hover:text-brand-200 dark:focus:ring-offset-slate-950"
               type="button"

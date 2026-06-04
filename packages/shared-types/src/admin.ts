@@ -14,7 +14,6 @@ export type AdminRecordValue = string | number | boolean | string[] | unknown[] 
 
 export type AdminRecord = {
   id?: string;
-  sort_order?: number;
   is_published?: boolean;
   updated_at?: string;
   [key: string]: AdminRecordValue | undefined;

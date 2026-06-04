@@ -4,6 +4,7 @@ export {
   deleteAdminRecord,
   getAdminTableConfig,
   listAdminRecords,
+  removePortfolioAsset,
   resolveStoragePath,
   storageUploadTargets,
   updateAdminRecord,

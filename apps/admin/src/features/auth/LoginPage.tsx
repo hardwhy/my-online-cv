@@ -16,6 +16,7 @@ export function LoginPage() {
   const redirectTo = state?.from?.pathname ?? '/';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -60,13 +61,32 @@ export function LoginPage() {
             </label>
             <label className="block text-sm font-medium text-slate-200">
               Password
-              <input
-                className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-brand-300"
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                required
-              />
+              <span className="relative mt-2 block">
+                <input
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 pr-12 text-white outline-none transition focus:border-brand-300"
+                  type={isPasswordVisible ? 'text' : 'password'}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
+                <button
+                  className="absolute inset-y-0 right-3 my-auto flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-800 hover:text-white"
+                  type="button"
+                  onClick={() => setIsPasswordVisible((isVisible) => !isVisible)}
+                  aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
+                >
+                  {isPasswordVisible ? (
+                    <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                      <path d="M3 3l14 14M8.3 8.3A2.4 2.4 0 0 0 10 12.4c.62 0 1.18-.23 1.6-.6M6.1 6.7C4.75 7.5 3.7 8.65 3 10c1.4 2.7 4 4.5 7 4.5 1.15 0 2.23-.25 3.2-.7M9.15 5.57c.28-.04.56-.07.85-.07 3 0 5.6 1.8 7 4.5-.38.73-.86 1.38-1.43 1.94" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : (
+                    <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                      <path d="M3 10s2.5-4.5 7-4.5S17 10 17 10s-2.5 4.5-7 4.5S3 10 3 10Z" strokeLinecap="round" strokeLinejoin="round" />
+                      <circle cx="10" cy="10" r="2.4" />
+                    </svg>
+                  )}
+                </button>
+              </span>
             </label>
             {error ? <p className="rounded-xl border border-red-400/30 bg-red-400/10 p-3 text-sm text-red-100">{error}</p> : null}
             <button
