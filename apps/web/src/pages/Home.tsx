@@ -4,7 +4,7 @@ import { PageTransition } from '../components/PageTransition';
 import { ProjectCard } from '../components/ProjectCard';
 import { Section } from '../components/Section';
 import { Seo } from '../components/Seo';
-import { DownloadCvButton } from '../features/cv/DownloadCvButton';
+import { DownloadCvButton } from '../components/DownloadCvButton';
 import { useAchievements, useProfile, useProjects, useTestimonials } from '../hooks/usePortfolioContent';
 import { getProfilePhotoUrl } from '../lib/storage';
 

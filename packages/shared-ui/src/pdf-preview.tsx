@@ -1,30 +1,65 @@
 import { useEffect, useMemo } from 'react';
-import { downloadBlob } from './pdf-utils';
+import { motion, AnimatePresence } from 'framer-motion';
+
+function RefreshIcon() {
+  return (
+    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M15.5 10a5.5 5.5 0 1 1-1.37-3.63M15.5 3v4h-4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function CloudArrowUpIcon() {
+  return (
+    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M13 10.5l-3-3-3 3M10 7.5v6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 12.5a4 4 0 0 1 .5-7.97 3.5 3.5 0 1 1 6.8 0A4.5 4.5 0 1 1 11 15.5H6.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M16.25 5.5l-8.75 9-4.25-4.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function XMarkIcon() {
+  return (
+    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M15 5L5 15M5 5l10 10" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 type PdfPreviewDialogProps = {
   blob: Blob | null;
   error: string | null;
   isLoading: boolean;
+  isUploading?: boolean;
+  uploadStatus?: 'idle' | 'success' | 'error';
   title: string;
   emptySubtitle: string;
-  fileName: string;
   loadingMessage?: string;
-  downloadEventName?: string;
   onClose: () => void;
   onRetry: () => void;
+  onUpload?: () => void;
 };
 
 export function PdfPreviewDialog({
   blob,
   error,
   isLoading,
+  isUploading,
+  uploadStatus,
   title,
   emptySubtitle,
-  fileName,
   loadingMessage = 'Generating PDF...',
-  downloadEventName,
   onClose,
   onRetry,
+  onUpload,
 }: PdfPreviewDialogProps) {
   const previewUrl = useMemo(() => (blob ? URL.createObjectURL(blob) : null), [blob]);
 
@@ -33,12 +68,6 @@ export function PdfPreviewDialog({
       if (previewUrl) URL.revokeObjectURL(previewUrl);
     };
   }, [previewUrl]);
-
-  const downloadPdf = () => {
-    if (!blob) return;
-    downloadBlob(blob, { fileName });
-    if (downloadEventName) window.dispatchEvent(new CustomEvent(downloadEventName));
-  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
@@ -50,27 +79,64 @@ export function PdfPreviewDialog({
           </div>
           <div className="flex flex-wrap gap-2">
             <button
-              className="rounded-full border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-300 hover:text-brand-700 disabled:opacity-50 dark:border-slate-700 dark:text-slate-200"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition hover:border-brand-300 hover:text-brand-700 disabled:opacity-50 dark:border-slate-700 dark:text-slate-200"
               type="button"
               disabled={isLoading}
               onClick={onRetry}
+              title="Regenerate"
             >
-              Regenerate
+              <RefreshIcon />
             </button>
+            {onUpload && (
+              <button
+                className={`flex h-10 w-10 items-center justify-center rounded-full border transition disabled:opacity-50 ${
+                  uploadStatus === 'success'
+                    ? 'border-emerald-300 text-emerald-600 dark:border-emerald-700 dark:text-emerald-400'
+                    : 'border-slate-300 text-slate-700 hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:text-slate-200'
+                }`}
+                type="button"
+                disabled={isUploading || isLoading || !blob}
+                onClick={onUpload}
+                title={uploadStatus === 'success' ? 'Uploaded' : 'Upload to Storage'}
+              >
+                <AnimatePresence mode="wait">
+                  {isUploading ? (
+                    <motion.div
+                      key="loading"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-600"
+                    />
+                  ) : uploadStatus === 'success' ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.8, rotate: -45 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                    >
+                      <CheckIcon />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="idle"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                    >
+                      <CloudArrowUpIcon />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </button>
+            )}
             <button
-              className="rounded-full bg-slate-950 px-4 py-2 text-sm font-bold text-white transition hover:bg-brand-700 disabled:opacity-50 dark:bg-brand-300 dark:text-slate-950"
-              type="button"
-              disabled={!blob || isLoading}
-              onClick={downloadPdf}
-            >
-              Download
-            </button>
-            <button
-              className="rounded-full border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:text-slate-200"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-red-200 text-red-600 transition hover:bg-red-50 dark:border-red-900/50 dark:text-red-400 dark:hover:bg-red-900/20"
               type="button"
               onClick={onClose}
+              title="Close"
             >
-              Close
+              <XMarkIcon />
             </button>
           </div>
         </div>

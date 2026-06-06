@@ -10,4 +10,6 @@ const getPublicStorageUrl = (path: string) => {
 
 export const getProfilePhotoUrl = () => getPublicStorageUrl('profile/ayi-hardiyanto-profile.png') ?? localAssetPath('ayi-hardiyanto-profile.png');
 
+export const getCvDownloadUrl = () => getPublicStorageUrl('cv/ayi-hardiyanto-cv.pdf') ?? localAssetPath('ayi-hardiyanto-cv.pdf');
+
 export const getProjectThumbnailUrl = (slug: string) => getPublicStorageUrl(`projects/${slug}/thumbnail.webp`);
