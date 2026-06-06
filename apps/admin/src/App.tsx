@@ -4,6 +4,7 @@ import { AuthProvider } from './features/auth/AuthProvider';
 import { LoginPage } from './features/auth/LoginPage';
 import { ProtectedRoute } from './features/auth/ProtectedRoute';
 import { ContentAdmin } from './features/content/ContentAdmin';
+import { ExportCvPage } from './features/export/ExportCvPage';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           }
         >
           <Route index element={<ContentAdmin />} />
+          <Route path="export" element={<ExportCvPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

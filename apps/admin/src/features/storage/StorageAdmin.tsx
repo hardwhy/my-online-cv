@@ -1,7 +1,7 @@
 import { FormEvent, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { adminTableConfigs, listAdminRecords, removePortfolioAsset, resolveStoragePath, storageUploadTargets, uploadPortfolioAsset } from '@portfolio/shared-services';
-import type { AdminRecord, AdminTableName, StorageTargetKind, StorageUploadTarget } from '@portfolio/shared-types';
+import { adminTableConfigs, listAdminRecords, removePortfolioAsset, resolveStoragePath, storageUploadTargets, uploadPortfolioAsset } from '@web-cv-services/shared-services';
+import type { AdminRecord, AdminTableName, StorageTargetKind, StorageUploadTarget } from '@web-cv-services/shared-types';
 import { AdminSelect } from '../../components/AdminDropdown';
 import { adminSupabase } from '../../lib/supabase';
 

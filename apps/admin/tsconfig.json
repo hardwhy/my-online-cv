@@ -8,12 +8,6 @@
       "path": "./tsconfig.node.json"
     },
     {
-      "path": "../../packages/shared-types"
-    },
-    {
-      "path": "../../packages/shared-services"
-    },
-    {
       "path": "../../packages/supabase"
     }
   ]

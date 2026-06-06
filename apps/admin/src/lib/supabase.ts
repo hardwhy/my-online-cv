@@ -1,4 +1,4 @@
-import { createPortfolioSupabaseClient } from '@portfolio/supabase';
+import { createPortfolioSupabaseClient } from '@web-cv/supabase';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
