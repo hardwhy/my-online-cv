@@ -11,6 +11,7 @@ import {
   getAchievements,
   getBlogPosts,
   getCertifications,
+  getCVData,
   getExperiences,
   getProfile,
   getProjects,
@@ -99,5 +100,12 @@ export function useBlogPosts() {
     initialDataUpdatedAt: 0,
     queryFn: getBlogPosts,
     queryKey: ['portfolio', activeContentSource, 'blog-posts'],
+  });
+}
+
+export function useCVData() {
+  return useQuery({
+    queryFn: getCVData,
+    queryKey: ['portfolio', activeContentSource, 'cv-data'],
   });
 }

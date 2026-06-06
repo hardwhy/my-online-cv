@@ -12,6 +12,7 @@ const Skills = lazy(() => import('./pages/Skills'));
 const Certifications = lazy(() => import('./pages/Certifications'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Blog = lazy(() => import('./pages/Blog'));
+const Cv = lazy(() => import('./pages/Cv'));
 
 function App() {
   const location = useLocation();
@@ -29,6 +30,7 @@ function App() {
           <Route path="certifications" element={<Certifications />} />
           <Route path="contact" element={<Contact />} />
           <Route path="blog" element={<Blog />} />
+          <Route path="cv" element={<Cv />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

@@ -53,11 +53,19 @@ export function Analytics() {
       writeAnalytics(state);
     };
 
+    const onCvDownload = () => {
+      const state = readAnalytics();
+      state.cvDownloads += 1;
+      writeAnalytics(state);
+    };
+
     window.addEventListener('click', onClick);
     window.addEventListener('portfolio:contact-submission', onContactSubmission);
+    window.addEventListener('portfolio:cv-download', onCvDownload);
     return () => {
       window.removeEventListener('click', onClick);
       window.removeEventListener('portfolio:contact-submission', onContactSubmission);
+      window.removeEventListener('portfolio:cv-download', onCvDownload);
     };
   }, []);
 
