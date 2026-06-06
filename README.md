@@ -1,121 +1,67 @@
-# Senior Engineer Portfolio
+# ✨ Senior Engineer Portfolio
 
-A modern, responsive personal CV and portfolio application built with Nx, React, TypeScript, Vite, Tailwind CSS, Framer Motion, React Router, and Supabase.
+Welcome to my professional corner of the internet! 🌐 This repository contains the frontend applications for my personal CV and portfolio. It's built with modern tools to be fast, beautiful, and easy to maintain. 🚀
 
-## Features
+## 🌟 Features
 
-- Responsive mobile-first portfolio layout
-- Light and dark mode with persisted preference
-- Smooth page transitions, scroll reveal animations, hover states, animated skill bars, and timeline animations
-- Home, About, Experience, Projects, Project Detail, Skills, Certifications, Contact, and Blog pages
-- Searchable and filterable project gallery
-- Expandable experience timeline
-- Contact form validation
-- Command palette with `Cmd K` / `Ctrl K`
-- Local analytics scaffold for visits, PDF downloads, and contact submissions
-- SEO basics: meta tags, Open Graph, Twitter cards, JSON-LD structured data, robots.txt, and sitemap.xml
-- Lazy-loaded routes and lightweight SVG assets
+- **Responsive & Mobile-First**: Looks great on your phone, tablet, or desktop! 📱💻
+- **Light & Dark Mode**: Respects your eyes and your preferences. 🌙☀️
+- **Silky Smooth Animations**: Powered by **Framer Motion** for that premium feel. ✨
+- **Dynamic Content**: Fetches the latest data from Supabase or falls back to static files. 🔗
+- **Command Palette**: Press `Cmd K` or `Ctrl K` to navigate like a pro! ⌨️
+- **SEO Optimized**: Meta tags, Open Graph, and JSON-LD for maximum visibility. 🔍
+- **Lazy Loading**: Fast initial loads and snappy transitions. ⚡️
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Framer Motion
-- React Router
-- React Query
-- Supabase
-- Nx
+- **React 19** ⚛️
+- **TypeScript** 🟦
+- **Vite** ⚡️
+- **Tailwind CSS** 🎨
+- **Framer Motion** 🎬
+- **Nx** 🏗️
+- **Supabase** ☁️
 
-## Getting Started
+## 🚀 Getting Started
 
-```bash
-npm install
-npm run dev
-```
+1.  **Install the goodies**:
+    ```bash
+    npm install
+    ```
 
-For switchable content sources, copy `.env.example` to `.env.local`. Keep `VITE_CONTENT_SOURCE=static` while testing the existing static data, then use `VITE_CONTENT_SOURCE=supabase` to test Supabase-backed content. See `docs/supabase.md` for the database schema, storage layout, environment guidance, and migration notes.
+2.  **Start the magic**:
+    ```bash
+    # Run the public portfolio
+    npm run dev
 
-Build for production:
+    # Run the admin dashboard
+    npm run dev:admin
+    ```
 
-```bash
-npm run build
-npm run preview
-```
+3.  **Build for production**:
+    ```bash
+    npm run build
+    ```
 
-Run linting:
+## 🏗️ Project Structure
 
-```bash
-npm run lint
-```
+This is a monorepo powered by **Nx**!
 
-## Deploy To GitHub Pages
+- **[apps/web](file:///Users/nb-dk-0614/Documents/Personal Space/web-cv/apps/web)**: The public-facing portfolio website. 🌐
+- **[apps/admin](file:///Users/nb-dk-0614/Documents/Personal Space/web-cv/apps/admin)**: The internal dashboard for managing content. 🛠️
+- **[packages/](file:///Users/nb-dk-0614/Documents/Personal Space/web-cv/packages)**: Shared logic and UI components used by both apps. 📦
 
-This project is ready for GitHub Pages hosting.
+> **Note:** The backend PDF generation service has moved! Check out the [web-cv-services](https://github.com/your-username/web-cv-services) repository for the backend logic. 🚀
 
-1. Push the repository to GitHub.
-2. In GitHub, open `Settings` -> `Pages`.
-3. Set `Build and deployment` source to `GitHub Actions`.
-4. Save the setting once before running the deployment workflow.
-5. Push to the `main` branch, or run the `Deploy to GitHub Pages` workflow manually from the `Actions` tab.
+## 📊 Analytics
 
-GitHub must have Pages enabled manually for the repository. If Pages is not enabled, `actions/deploy-pages` can fail with `Not Found` or `Resource not accessible by integration` even when the app build succeeds.
+We keep it simple and private! 🕵️‍♂️ Analytics are stored locally in your browser, tracking:
+- Page visits 📈
+- PDF downloads 📄
+- Form submissions ✉️
 
-The app uses `HashRouter`, so routes are GitHub Pages-safe and will look like:
+## 🌈 Customization
 
-```text
-https://<username>.github.io/<repository-name>/#/projects
-```
+Want to make it your own? Just update the files in `apps/web/src/data/` or connect your own Supabase project! Check out `docs/supabase.md` for the setup guide. 📖
 
-The Vite build uses relative asset paths, so it works whether the repository is deployed as a user site or a project site.
-
-## Project Structure
-
-```text
-apps/
-  web/
-    src/
-      components/       Reusable layout, cards, animation, SEO, and UI elements
-      data/             Static fallback portfolio content
-      hooks/            Theme, interaction, and portfolio query hooks
-      lib/              Supabase and React Query clients
-      pages/            Routed page views
-      services/         Supabase portfolio data access and mappers
-      types/            Shared TypeScript interfaces
-    public/             Static assets, PDFs, robots.txt, sitemap.xml
-packages/
-  shared-types/         Future shared content and database types
-  shared-ui/            Future reusable UI primitives
-  shared-services/      Future shared data access and validation utilities
-  supabase/             Future shared Supabase client and storage helpers
-docs/
-  supabase.md       Supabase setup and migration notes
-  supabase-migration-drop-content-image-columns.sql
-  supabase-schema.sql
-  supabase-seed.sql
-```
-
-## Customization
-
-Portfolio content can be loaded from Supabase or from the static fallback files. During migration, keep these files available for local testing and fallback content:
-
-- `apps/web/src/data/profile.ts`
-- `apps/web/src/data/experiences.ts`
-- `apps/web/src/data/projects.ts`
-- `apps/web/src/data/certifications.ts`
-- `apps/web/src/data/skills.ts`
-- `apps/web/src/data/blog.ts`
-
-Replace placeholder PDFs in `apps/web/public/cv/` with real CV and certificate files. Replace `https://example.com` in `apps/web/index.html`, `apps/web/public/robots.txt`, and `apps/web/public/sitemap.xml` with your deployed domain.
-
-## Analytics
-
-The current analytics layer stores basic counters in `localStorage` under `portfolio-analytics`:
-
-- Portfolio visits
-- CV and certificate PDF downloads
-- Contact form submissions
-- Per-route visit counts
-
-Swap `src/components/Analytics.tsx` with your preferred provider such as Plausible, PostHog, Google Analytics, or a custom endpoint when deploying.
+Happy building! 💻✨

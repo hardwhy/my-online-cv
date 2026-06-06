@@ -14,12 +14,18 @@
     "lint:admin": "nx lint admin"
   },
   "dependencies": {
+    "@web-cv-services/cv-renderer": "git+https://github.com/hardwhy/my-online-cv-services.git#main:packages/cv-renderer",
+    "@web-cv-services/shared-services": "git+https://github.com/hardwhy/my-online-cv-services.git#main:packages/shared-services",
+    "@web-cv-services/shared-types": "git+https://github.com/hardwhy/my-online-cv-services.git#main:packages/shared-types",
     "@supabase/supabase-js": "^2.78.0",
     "@tanstack/react-query": "^5.101.0",
     "framer-motion": "^12.40.0",
+    "pdfjs-dist": "4.10.38",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-router-dom": "^6.30.4"
+    "react-pdf": "9.2.1",
+    "react-router-dom": "^6.30.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
@@ -38,6 +44,7 @@
     "nx": "^22.7.5",
     "postcss": "^8.5.15",
     "tailwindcss": "^3.4.19",
+    "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.1",
     "vite": "^6.4.3"
