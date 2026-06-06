@@ -35,6 +35,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout service packages
+        run: git clone --depth 1 https://github.com/hardwhy/my-online-cv-services.git ../web-cv-services
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
