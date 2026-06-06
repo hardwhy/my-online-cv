@@ -1,4 +1,4 @@
-export const defaultPdfFileName = 'nuttapon-bunditwatanachai-cv.pdf';
+export const defaultPdfFileName = 'ayi-hardiyanto-cv.pdf';
 
 type DownloadBlobOptions = {
   fileName?: string;
