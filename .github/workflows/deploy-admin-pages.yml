@@ -35,11 +35,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Checkout service packages
+        run: git clone --depth 1 https://github.com/hardwhy/my-online-cv-services.git ../web-cv-services
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
+
+      - name: Install service package dependencies
+        run: npm ci --include=dev
+        working-directory: ../web-cv-services
 
       - name: Install dependencies
         run: npm ci
