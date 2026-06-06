@@ -2,7 +2,13 @@ import type { Config } from 'tailwindcss';
 
 export default {
   darkMode: 'class',
-  content: ['./apps/web/index.html', './apps/web/src/**/*.{ts,tsx}', './apps/admin/index.html', './apps/admin/src/**/*.{ts,tsx}', './packages/**/*.{ts,tsx}'],
+  content: [
+    './apps/web/index.html',
+    './apps/web/src/**/*.{ts,tsx}',
+    './apps/admin/index.html',
+    './apps/admin/src/**/*.{ts,tsx}',
+    './packages/**/*.{ts,tsx}',
+  ],
   theme: {
     extend: {
       fontFamily: {

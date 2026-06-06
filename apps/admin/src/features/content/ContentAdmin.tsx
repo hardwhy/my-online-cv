@@ -10,8 +10,8 @@ import {
   storageUploadTargets,
   updateAdminRecord,
   uploadPortfolioAsset,
-} from '@portfolio/shared-services';
-import type { AdminFieldConfig, AdminRecord, AdminRecordValue, AdminTableConfig, StorageTargetKind, StorageUploadTarget } from '@portfolio/shared-types';
+} from '@web-cv-services/shared-services';
+import type { AdminFieldConfig, AdminRecord, AdminRecordValue, AdminTableConfig, StorageTargetKind, StorageUploadTarget } from '@web-cv-services/shared-types';
 import { AdminMenu, AdminSelect, MoreIcon } from '../../components/AdminDropdown';
 import { adminSupabase } from '../../lib/supabase';
 

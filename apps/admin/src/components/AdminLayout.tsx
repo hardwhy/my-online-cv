@@ -4,6 +4,7 @@ import { useTheme } from '../hooks/useTheme';
 
 const navItems = [
   { to: '/', label: 'Content' },
+  { to: '/export', label: 'Export CV' },
 ];
 
 function SunIcon() {
