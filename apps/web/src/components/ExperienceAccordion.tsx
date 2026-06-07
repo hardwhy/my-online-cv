@@ -50,7 +50,10 @@ export function ExperienceAccordion({ experience, index }: ExperienceAccordionPr
               <h4 className="font-bold text-slate-950 dark:text-white">Responsibilities</h4>
               <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
                 {experience.responsibilities.map((item) => (
-                  <li key={item}>- {item}</li>
+                  <li key={item} className="flex gap-2.5">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-400 dark:bg-brand-500" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -58,7 +61,10 @@ export function ExperienceAccordion({ experience, index }: ExperienceAccordionPr
               <h4 className="font-bold text-slate-950 dark:text-white">Achievements</h4>
               <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
                 {experience.achievements.map((item) => (
-                  <li key={item}>- {item}</li>
+                  <li key={item} className="flex gap-2.5">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-400 dark:bg-brand-500" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
                 ))}
               </ul>
             </div>

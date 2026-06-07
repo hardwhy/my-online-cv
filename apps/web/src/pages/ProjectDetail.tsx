@@ -6,6 +6,20 @@ import { Seo } from '../components/Seo';
 import { useProject } from '../hooks/usePortfolioContent';
 import { getProjectThumbnailUrl } from '../lib/storage';
 
+function BackButton() {
+  return (
+    <Link
+      to="/projects"
+      aria-label="Back to projects"
+      className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white p-1.5 text-slate-500 shadow-sm transition hover:-translate-x-0.5 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 dark:hover:text-brand-300"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4" aria-hidden="true">
+        <path fillRule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" />
+      </svg>
+    </Link>
+  );
+}
+
 export default function ProjectDetail() {
   const { slug } = useParams();
   const { data: project, isFetching } = useProject(slug);
@@ -27,7 +41,7 @@ export default function ProjectDetail() {
   return (
     <PageTransition>
       <Seo title={project.title} description={project.description} path={`/projects/${project.slug}`} />
-      <Section eyebrow={project.category} title={project.title} description={project.description}>
+      <Section eyebrow={project.category} title={project.title} description={project.description} backButton={<BackButton />}>
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900">
             <ProjectVisual
@@ -59,9 +73,6 @@ export default function ProjectDetail() {
                   View reference
                 </a>
               )}
-              <Link to="/projects" className="btn-secondary">
-                Back
-              </Link>
             </div>
           </aside>
         </div>
