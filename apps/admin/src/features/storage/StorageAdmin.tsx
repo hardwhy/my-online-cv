@@ -180,11 +180,11 @@ export function StorageAdmin() {
         ) : null}
 
         <div className="mt-6 flex flex-wrap gap-2">
-          <button className="rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-700 disabled:opacity-60 dark:bg-brand-300 dark:text-slate-950" type="submit" disabled={uploadMutation.isPending}>
+          <button className="btn-primary" type="submit" disabled={uploadMutation.isPending}>
             {uploadMutation.isPending ? 'Uploading...' : 'Upload asset'}
           </button>
           <button
-            className="rounded-full border border-red-200 px-5 py-3 text-sm font-bold text-red-600 transition hover:bg-red-50 disabled:opacity-60 dark:border-red-400/30 dark:text-red-200 dark:hover:bg-red-400/10"
+            className="btn-danger"
             type="button"
             disabled={removeMutation.isPending || (target.requiresSlug && !slug)}
             onClick={() => {
