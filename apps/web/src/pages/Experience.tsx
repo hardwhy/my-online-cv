@@ -1,6 +1,6 @@
 import { ExperienceAccordion } from '../components/ExperienceAccordion';
 import { PageTransition } from '../components/PageTransition';
-import { Section } from '../components/Section';
+import { Section } from '@web-cv/shared-ui';
 import { Seo } from '../components/Seo';
 import { useExperiences } from '../hooks/usePortfolioContent';
 

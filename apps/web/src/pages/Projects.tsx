@@ -2,7 +2,7 @@ import { KeyboardEvent, useEffect, useId, useMemo, useRef, useState } from 'reac
 import { useSearchParams } from 'react-router-dom';
 import { PageTransition } from '../components/PageTransition';
 import { ProjectCard } from '../components/ProjectCard';
-import { Section } from '../components/Section';
+import { Section } from '@web-cv/shared-ui';
 import { Seo } from '../components/Seo';
 import { projectCategories, useProjects } from '../hooks/usePortfolioContent';
 
@@ -247,11 +247,7 @@ export default function Projects() {
                         </p>
                       </div>
                       {categoryProjects.length > 3 ? (
-                        <button
-                          type="button"
-                          onClick={() => showCategoryProjects(projectCategory)}
-                          className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-brand-700 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-300 dark:border-slate-800 dark:bg-slate-900 dark:text-brand-200 dark:hover:border-brand-400"
-                        >
+                        <button type="button" onClick={() => showCategoryProjects(projectCategory)} className="btn-secondary">
                           View all {projectCategory}
                         </button>
                       ) : null}
