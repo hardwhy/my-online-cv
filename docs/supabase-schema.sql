@@ -9,11 +9,20 @@ create table if not exists public.site_profile (
   email text not null,
   phone text,
   photo_url text,
-  resume_url text,
-  socials jsonb not null default '[]',
   stats jsonb not null default '[]',
   strengths text[] not null default '{}',
   interests text[] not null default '{}',
+  is_published boolean not null default true,
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.social_links (
+  id uuid primary key default gen_random_uuid(),
+  slug text not null unique,
+  label text not null,
+  href text not null,
+  icon text,
+  show_in_web boolean not null default true,
   is_published boolean not null default true,
   updated_at timestamptz not null default now()
 );

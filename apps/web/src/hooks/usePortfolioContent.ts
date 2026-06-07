@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { achievements, profile, testimonials } from '../data/profile';
+import { achievements, profile, socials, testimonials } from '../data/profile';
 import { blogPosts } from '../data/blog';
 import { certifications } from '../data/certifications';
 import { experiences } from '../data/experiences';
@@ -16,6 +16,7 @@ import {
   getProfile,
   getProjects,
   getSkills,
+  getSocialLinks,
   getTestimonials,
 } from '../services/portfolioService';
 
@@ -28,6 +29,15 @@ export function useProfile() {
     initialDataUpdatedAt: 0,
     queryFn: getProfile,
     queryKey: ['portfolio', activeContentSource, 'profile'],
+  });
+}
+
+export function useSocialLinks() {
+  return useQuery({
+    initialData: socials,
+    initialDataUpdatedAt: 0,
+    queryFn: getSocialLinks,
+    queryKey: ['portfolio', activeContentSource, 'socials'],
   });
 }
 

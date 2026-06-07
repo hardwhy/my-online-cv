@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useProfile } from '../hooks/usePortfolioContent';
+import { useProfile, useSocialLinks } from '../hooks/usePortfolioContent';
 import { useTheme } from '../hooks/useTheme';
 import { getProfilePhotoUrl } from '../lib/storage';
 import { Analytics } from './Analytics';
@@ -28,6 +28,7 @@ function ContentLoader() {
 
 export function Layout() {
   const { data: profile } = useProfile();
+  const { data: socials } = useSocialLinks();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [isHeroPhotoVisible, setIsHeroPhotoVisible] = useState(false);
@@ -220,11 +221,26 @@ export function Layout() {
             &copy; {new Date().getFullYear()} {profile.fullName}
           </p>
           <div className="flex gap-4">
-            {profile.socials.map((social) => (
-              <a key={social.label} href={social.href} className="font-semibold hover:text-brand-600 dark:hover:text-brand-300">
-                {social.label}
-              </a>
-            ))}
+            {socials
+              .filter((social) => social.showInWeb)
+              .map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className="group flex items-center justify-center transition"
+                  title={social.label}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {social.icon ? (
+                    <img src={social.icon} alt={social.label} className="h-5 w-5 opacity-60 transition group-hover:opacity-100 dark:invert" />
+                  ) : (
+                    <span className="font-semibold hover:text-brand-600 dark:hover:text-brand-300">
+                      {social.label}
+                    </span>
+                  )}
+                </a>
+              ))}
           </div>
      
         </div>

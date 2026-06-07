@@ -6,6 +6,8 @@ import { AdminSelect } from '../../components/AdminDropdown';
 import { adminSupabase } from '../../lib/supabase';
 
 const slugSourceByTarget: Partial<Record<StorageTargetKind, AdminTableName>> = {
+  'profile': 'site_profile',
+  'social-icon': 'social_links',
   'project-thumbnail': 'projects',
   'certificate-file': 'certifications',
   'certificate-preview': 'certifications',
@@ -24,6 +26,22 @@ const getSlugOption = (record: AdminRecord, tableName: AdminTableName) => {
       value: String(record.slug ?? ''),
       label: String(record.slug ?? ''),
       description: String(record.title ?? 'Untitled project'),
+    };
+  }
+
+  if (tableName === 'social_links') {
+    return {
+      value: String(record.slug ?? ''),
+      label: String(record.slug ?? ''),
+      description: String(record.label ?? 'Untitled social link'),
+    };
+  }
+
+  if (tableName === 'site_profile') {
+    return {
+      value: 'ayi-hardiyanto-profile',
+      label: 'ayi-hardiyanto-profile',
+      description: 'Default profile photo path',
     };
   }
 
