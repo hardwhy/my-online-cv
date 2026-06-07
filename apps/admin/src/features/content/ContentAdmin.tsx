@@ -30,7 +30,8 @@ type PendingAssetChange = {
 
 const localAssetPath = (filename: string) => `${import.meta.env.BASE_URL}assets/${filename}`;
 
-const tableFilterColumns: Partial<Record<AdminTableConfig['name'], string[]>> = {
+const tableFilterColumns: Partial<Record<string, string[]>> = {
+  social_links: ['label', 'status'],
   skills: ['name', 'category', 'status'],
   experiences: ['company', 'position', 'status'],
   projects: ['title', 'category', 'status'],
@@ -643,7 +644,7 @@ function RecordForm({
   };
 
   const getAssetSlug = (target: StorageUploadTarget, payload: AdminRecord) => {
-    if (target.kind === 'project-thumbnail') return typeof payload.slug === 'string' ? payload.slug : '';
+    if (target.kind === 'project-thumbnail' || target.kind === 'social-icon') return typeof payload.slug === 'string' ? payload.slug : '';
     if (target.kind === 'certificate-file' || target.kind === 'certificate-preview') {
       return slugify([payload.name, payload.issuer].filter((item) => typeof item === 'string' && item).join('-'));
     }
@@ -652,6 +653,7 @@ function RecordForm({
 
   const applyPendingAssetChanges = async (payload: AdminRecord) => {
     const urlColumns: Partial<Record<StorageTargetKind, string>> = {
+      'social-icon': 'icon',
       'certificate-file': 'download_url',
       'certificate-preview': 'image_url',
     };
@@ -789,13 +791,22 @@ function RecordForm({
         })}
       </div>
 
-      {config.name === 'site_profile' || config.name === 'projects' || config.name === 'certifications' ? (
-        <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          {config.name === 'site_profile' && getStorageTarget('profile') ? <AssetField target={getStorageTarget('profile')!} pendingChange={assetChanges.profile} onPendingChange={(change) => setPendingAssetChange('profile', change)} /> : null}
-          {config.name === 'projects' && getStorageTarget('project-thumbnail') ? (
+      {String(config.name) === 'site_profile' || String(config.name) === 'projects' || String(config.name) === 'certifications' || String(config.name) === 'social_links' ? (
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+          {String(config.name) === 'site_profile' && getStorageTarget('profile') ? <AssetField target={getStorageTarget('profile')!} pendingChange={assetChanges.profile} onPendingChange={(change) => setPendingAssetChange('profile', change)} /> : null}
+          {String(config.name) === 'social_links' && getStorageTarget('social-icon') ? (
+            <AssetField
+              target={getStorageTarget('social-icon')!}
+              slug={typeof formState.slug === 'string' ? formState.slug : ''}
+              value={typeof formState.icon === 'string' ? formState.icon : undefined}
+              pendingChange={assetChanges['social-icon']}
+              onPendingChange={(change) => setPendingAssetChange('social-icon', change)}
+            />
+          ) : null}
+          {String(config.name) === 'projects' && getStorageTarget('project-thumbnail') ? (
             <AssetField target={getStorageTarget('project-thumbnail')!} slug={projectSlug} pendingChange={assetChanges['project-thumbnail']} onPendingChange={(change) => setPendingAssetChange('project-thumbnail', change)} />
           ) : null}
-          {config.name === 'certifications' && getStorageTarget('certificate-file') ? (
+          {String(config.name) === 'certifications' && getStorageTarget('certificate-file') ? (
             <AssetField
               target={getStorageTarget('certificate-file')!}
               slug={certificateSlug}
@@ -804,7 +815,7 @@ function RecordForm({
               onPendingChange={(change) => setPendingAssetChange('certificate-file', change)}
             />
           ) : null}
-          {config.name === 'certifications' && getStorageTarget('certificate-preview') ? (
+          {String(config.name) === 'certifications' && getStorageTarget('certificate-preview') ? (
             <AssetField
               target={getStorageTarget('certificate-preview')!}
               slug={certificateSlug}

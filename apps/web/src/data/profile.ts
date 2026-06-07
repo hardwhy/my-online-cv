@@ -1,4 +1,4 @@
-import type { Achievement, Profile, Testimonial } from '../types/content';
+import type { Achievement, Profile, SocialLink, Testimonial } from '../types/content';
 
 export const profile: Profile = {
   fullName: 'Ayi Hardiyanto',
@@ -7,10 +7,6 @@ export const profile: Profile = {
     'Software Engineer at DKATALIS with experience building web and mobile applications using Flutter, TypeScript, React, Redux, and Firebase. I focus on modular architecture, responsive interfaces, reliable source control practices, and scalable product delivery.',
   location: 'Banten, Indonesia',
   email: 'ayihardyan@gmail.com',
-  resumeUrl: import.meta.env.VITE_CV_URL,
-  socials: [
-    { label: 'LinkedIn', href: 'https://id.linkedin.com/in/ayi-hardiyanto-986b88139' },
-  ],
   stats: [
     { label: 'Years of experience', value: '8+' },
     { label: 'Professional roles', value: '5+' },
@@ -24,6 +20,10 @@ export const profile: Profile = {
   ],
   interests: ['Continuous learning', 'Technological innovation', 'Mobile development', 'Agile delivery', 'User satisfaction'],
 };
+
+export const socials: SocialLink[] = [
+  { label: 'LinkedIn', href: 'https://id.linkedin.com/in/ayi-hardiyanto-986b88139', showInWeb: true, isPublished: true },
+];
 
 export const achievements: Achievement[] = [
   {

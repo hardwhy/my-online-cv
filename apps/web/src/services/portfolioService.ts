@@ -1,4 +1,4 @@
-import type { Achievement, BlogPost, Certification, CVData, Experience, Profile, Project, Skill, Testimonial } from '../types/content';
+import type { Achievement, BlogPost, Certification, CVData, Experience, Profile, Project, Skill, SocialLink, Testimonial } from '../types/content';
 import {
   getPortfolioAchievements,
   getPortfolioBlogPosts,
@@ -8,9 +8,10 @@ import {
   getPortfolioProfile,
   getPortfolioProjects,
   getPortfolioSkills,
+  getPortfolioSocialLinks,
   getPortfolioTestimonials,
 } from '@web-cv-services/shared-services';
-import { achievements as fallbackAchievements, profile as fallbackProfile, testimonials as fallbackTestimonials } from '../data/profile';
+import { achievements as fallbackAchievements, profile as fallbackProfile, socials as fallbackSocials, testimonials as fallbackTestimonials } from '../data/profile';
 import { blogPosts as fallbackBlogPosts } from '../data/blog';
 import { certifications as fallbackCertifications } from '../data/certifications';
 import { experiences as fallbackExperiences } from '../data/experiences';
@@ -21,6 +22,7 @@ import { supabase } from '../lib/supabase';
 
 const publicFallbacks = {
   profile: fallbackProfile,
+  socials: fallbackSocials,
   skills: fallbackSkills,
   experiences: fallbackExperiences,
   projects: fallbackProjects,
@@ -38,6 +40,11 @@ const publicOptions = {
 export async function getProfile(): Promise<Profile> {
   if (!isSupabaseContentEnabled) return fallbackProfile;
   return getPortfolioProfile(supabase, publicOptions);
+}
+
+export async function getSocialLinks(): Promise<SocialLink[]> {
+  if (!isSupabaseContentEnabled) return fallbackSocials;
+  return getPortfolioSocialLinks(supabase, publicOptions);
 }
 
 export async function getSkills(): Promise<Skill[]> {
@@ -79,6 +86,7 @@ export async function getCVData(): Promise<CVData> {
   if (!isSupabaseContentEnabled) {
     return {
       profile: fallbackProfile,
+      socials: fallbackSocials,
       skills: fallbackSkills,
       experiences: fallbackExperiences,
       projects: fallbackProjects,

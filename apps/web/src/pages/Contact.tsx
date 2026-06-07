@@ -129,9 +129,6 @@ export default function Contact() {
             <div className="mt-6 space-y-4 text-sm text-slate-600 dark:text-slate-300">
               <p><strong className="text-slate-950 dark:text-white">Email:</strong> <a href={`mailto:${profile.email}`} className="hover:text-brand-600">{profile.email}</a></p>
               <p><strong className="text-slate-950 dark:text-white">Location:</strong> {profile.location}</p>
-              {profile.socials.map((social) => (
-                <p key={social.label}><strong className="text-slate-950 dark:text-white">{social.label}:</strong> <a href={social.href} className="hover:text-brand-600">{social.href.replace('https://', '')}</a></p>
-              ))}
             </div>
           </aside>
 

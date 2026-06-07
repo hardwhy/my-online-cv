@@ -14,6 +14,7 @@ delete from public.certifications;
 delete from public.projects;
 delete from public.experiences;
 delete from public.skills;
+delete from public.social_links;
 delete from public.site_profile;
 
 insert into public.site_profile (
@@ -24,8 +25,6 @@ insert into public.site_profile (
   email,
   phone,
   photo_url,
-  resume_url,
-  socials,
   stats,
   strengths,
   interests,
@@ -38,10 +37,6 @@ insert into public.site_profile (
   $$ayihardyan@gmail.com$$,
   null,
   null,
-  $$/cv/ayi-hardiyanto-cv.pdf$$,
-  $$[
-    { "label": "LinkedIn", "href": "https://id.linkedin.com/in/ayi-hardiyanto-986b88139" }
-  ]$$::jsonb,
   $$[
     { "label": "Years of experience", "value": "8+" },
     { "label": "Professional roles", "value": "5+" },
@@ -62,6 +57,9 @@ insert into public.site_profile (
   ],
   true
 );
+
+insert into public.social_links (slug, label, href, icon, show_in_web, is_published) values
+  ($$linkedin$$, $$LinkedIn$$, $$https://id.linkedin.com/in/ayi-hardiyanto-986b88139$$, null, true, true);
 
 insert into public.skills (name, category, proficiency, description, sort_order, is_published) values
   ($$React JS$$, $$Frontend$$, 90, $$User-centric interfaces, front-end development, and product feature delivery.$$, 10, true),
