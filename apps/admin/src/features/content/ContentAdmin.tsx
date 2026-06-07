@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import {
   adminTableConfigs,
   createAdminRecord,
@@ -836,16 +837,67 @@ function RecordForm({
   );
 }
 
+function TableShimmer({ showsThumbnail, columnCount }: { showsThumbnail: boolean; columnCount: number }) {
+  const rows = Array.from({ length: 5 });
+  const cols = Array.from({ length: columnCount });
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-800">
+        <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-950/60 dark:text-slate-400">
+          <tr>
+            {showsThumbnail && <th className="px-4 py-3 font-semibold">Preview</th>}
+            {cols.map((_, i) => <th key={i} className="px-4 py-3"><div className="h-3 w-20 animate-pulse rounded bg-slate-200 dark:bg-slate-800" /></th>)}
+            <th className="px-4 py-3"><div className="h-3 w-12 animate-pulse rounded bg-slate-200 dark:bg-slate-800" /></th>
+            <th className="px-4 py-3"><div className="h-3 w-16 animate-pulse rounded bg-slate-200 dark:bg-slate-800" /></th>
+            <th className="px-4 py-3"><div className="h-3 w-14 animate-pulse rounded bg-slate-200 dark:bg-slate-800" /></th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+          {rows.map((_, rowIdx) => (
+            <tr key={rowIdx} className="align-top">
+              {showsThumbnail && (
+                <td className="px-4 py-3">
+                  <div className="h-12 w-20 animate-pulse rounded-xl bg-slate-100 dark:bg-slate-800" />
+                </td>
+              )}
+              {cols.map((_, colIdx) => (
+                <td key={colIdx} className="px-4 py-3">
+                  <div className="h-3 animate-pulse rounded bg-slate-100 dark:bg-slate-800" style={{ width: `${60 + ((rowIdx * 3 + colIdx * 7) % 40)}%` }} />
+                  {colIdx === 0 && <div className="mt-2 h-3 animate-pulse rounded bg-slate-100 dark:bg-slate-800" style={{ width: `${30 + ((rowIdx * 5) % 25)}%` }} />}
+                </td>
+              ))}
+              <td className="px-4 py-3"><div className="h-5 w-16 animate-pulse rounded-full bg-slate-100 dark:bg-slate-800" /></td>
+              <td className="px-4 py-3"><div className="h-3 w-20 animate-pulse rounded bg-slate-100 dark:bg-slate-800" /></td>
+              <td className="px-4 py-3"><div className="h-6 w-6 animate-pulse rounded bg-slate-100 dark:bg-slate-800" /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export function ContentAdmin() {
   const queryClient = useQueryClient();
   const formRef = useRef<HTMLDivElement>(null);
-  const [tableName, setTableName] = useState(adminTableConfigs[0].name);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tableNameFromUrl = searchParams.get('type') as typeof adminTableConfigs[number]['name'] | null;
+  const validTableName = adminTableConfigs.find((t) => t.name === tableNameFromUrl)?.name ?? adminTableConfigs[0].name;
+  const [tableName, setTableName] = useState(validTableName);
   const [editingRecord, setEditingRecord] = useState<AdminRecord | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [tableFilters, setTableFilters] = useState<Record<string, string>>({});
   const [previewOverlay, setPreviewOverlay] = useState<{ src: string; title: string } | null>(null);
   const config = useMemo(() => adminTableConfigs.find((table) => table.name === tableName) ?? adminTableConfigs[0], [tableName]);
   const queryKey = ['admin-content', config.name];
+
+  const setContentType = (nextType: string) => {
+    setTableName(nextType as typeof tableName);
+    setEditingRecord(null);
+    setIsCreating(false);
+    setTableFilters({});
+    setSearchParams({ type: nextType }, { replace: true });
+  };
 
   const recordsQuery = useQuery({
     queryKey,
@@ -991,12 +1043,7 @@ export function ContentAdmin() {
           label="Content type"
           value={config.name}
           options={adminTableConfigs.map((table) => ({ label: table.label, value: table.name, description: table.description }))}
-          onChange={(nextValue) => {
-            setTableName(nextValue as typeof tableName);
-            setEditingRecord(null);
-            setIsCreating(false);
-            setTableFilters({});
-          }}
+          onChange={(nextValue) => setContentType(nextValue)}
         />
       </div>
 
@@ -1018,7 +1065,7 @@ export function ContentAdmin() {
       ) : null}
 
       <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-        {recordsQuery.isLoading ? <p className="p-6 text-sm text-slate-500 dark:text-slate-400">Loading records...</p> : null}
+        {recordsQuery.isLoading ? <TableShimmer showsThumbnail={showsThumbnail} columnCount={visibleFields.length} /> : null}
         {recordsQuery.error ? <p className="p-6 text-sm text-red-600 dark:text-red-300">{recordsQuery.error.message}</p> : null}
         {!recordsQuery.isLoading && !recordsQuery.error ? (
           <div>
