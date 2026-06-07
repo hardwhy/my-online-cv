@@ -11,7 +11,8 @@
     "preview": "nx preview web",
     "preview:admin": "nx preview admin",
     "lint": "nx lint web",
-    "lint:admin": "nx lint admin"
+    "lint:admin": "nx lint admin",
+    "ship": "./scripts/ship.sh"
   },
   "dependencies": {
     "@web-cv-services/cv-renderer": "git+https://github.com/hardwhy/my-online-cv-services.git#main:packages/cv-renderer",

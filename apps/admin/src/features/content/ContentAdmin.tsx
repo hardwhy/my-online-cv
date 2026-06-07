@@ -300,7 +300,7 @@ function ArrayField({
             }}
             placeholder={`Add ${field.label.toLowerCase()}`}
           />
-          <button className="rounded-xl bg-slate-950 px-4 py-2 text-sm font-bold text-white transition hover:bg-brand-700 dark:bg-brand-300 dark:text-slate-950" type="button" onClick={addItem}>
+          <button className="btn-primary" type="button" onClick={addItem}>
             Add
           </button>
         </div>
@@ -409,7 +409,7 @@ function StructuredListField({
             placeholder={valueLabel}
             type={type === 'socials' ? 'url' : 'text'}
           />
-          <button className="rounded-xl bg-slate-950 px-4 py-2 text-sm font-bold text-white transition hover:bg-brand-700 dark:bg-white dark:text-slate-950" type="button" onClick={saveItem}>
+          <button className="btn-primary" type="button" onClick={saveItem}>
             {editingIndex === null ? 'Add' : 'Update'}
           </button>
         </div>
@@ -524,12 +524,12 @@ function AssetField({
         }}
       />
       <div className="mt-3 flex flex-wrap gap-2">
-        <button className="rounded-full border border-red-200 px-4 py-2 text-xs font-bold text-red-600 transition hover:bg-red-50 disabled:opacity-60 dark:border-red-400/30 dark:text-red-200 dark:hover:bg-red-400/10" type="button" onClick={queueRemove} disabled={target.requiresSlug && !slug}>
-          Remove on save
+        <button className="btn-danger" type="button" onClick={queueRemove} disabled={target.requiresSlug && !slug}>
+          Remove
         </button>
         {pendingChange ? (
-          <button className="rounded-full border border-slate-200 px-4 py-2 text-xs font-bold text-slate-600 transition hover:text-slate-950 dark:border-slate-700 dark:text-slate-300 dark:hover:text-white" type="button" onClick={() => onPendingChange(null)}>
-            Clear pending change
+          <button className="btn-secondary" type="button" onClick={() => onPendingChange(null)}>
+            Clear pending
           </button>
         ) : null}
       </div>
@@ -704,7 +704,7 @@ function RecordForm({
           <h2 className="font-display text-xl font-bold text-slate-950 dark:text-white">{record?.id ? 'Edit record' : 'Create record'}</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">{config.label}</p>
         </div>
-        <button className="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-200" type="button" onClick={onCancel}>
+        <button className="btn-secondary" type="button" onClick={onCancel}>
           Cancel
         </button>
       </div>
@@ -829,7 +829,7 @@ function RecordForm({
 
       {error ? <p className="mt-4 rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-100">{error}</p> : null}
 
-      <button className="mt-6 rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-700 disabled:opacity-60 dark:bg-brand-300 dark:text-slate-950" type="submit" disabled={isSubmitting}>
+      <button className="mt-6 btn-primary" type="submit" disabled={isSubmitting}>
         {isSubmitting ? 'Saving...' : 'Save record'}
       </button>
     </form>
@@ -975,7 +975,7 @@ export function ContentAdmin() {
             <p className="mt-2 max-w-2xl text-sm text-slate-500 dark:text-slate-400">{config.description}</p>
           </div>
           <button
-            className="rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-700 dark:bg-brand-300 dark:text-slate-950"
+            className="btn-primary"
             type="button"
             onClick={() => {
               setEditingRecord(null);

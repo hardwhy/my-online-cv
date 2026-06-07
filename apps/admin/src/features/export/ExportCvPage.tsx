@@ -282,7 +282,7 @@ export function ExportCvPage() {
             </div>
             <div className="flex flex-wrap justify-center gap-2 w-full">
               <button
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-white transition hover:bg-brand-700 disabled:opacity-60 dark:bg-brand-300 dark:text-slate-950"
+                className="btn-icon-primary"
                 type="button"
                 disabled={isGenerating}
                 onClick={() => void previewPdf()}
@@ -295,7 +295,7 @@ export function ExportCvPage() {
                 )}
               </button>
               <button
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:text-slate-200"
+                className="btn-icon-secondary"
                 type="button"
                 onClick={() => void cvQuery.refetch()}
                 title="Refresh data"
@@ -304,7 +304,7 @@ export function ExportCvPage() {
               </button>
 
               <button
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition hover:border-brand-300 hover:text-brand-700 disabled:opacity-60 dark:border-slate-700 dark:text-slate-200"
+                className="btn-icon-secondary"
                 type="button"
                 disabled={isGenerating}
                 onClick={() => void downloadPdf().catch(() => undefined)}
@@ -313,7 +313,7 @@ export function ExportCvPage() {
                 <ArrowDownTrayIcon />
               </button>
               <button
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition hover:border-brand-300 hover:text-brand-700 disabled:opacity-60 dark:border-slate-700 dark:text-slate-200"
+                className="btn-icon-secondary"
                 type="button"
                 disabled={isGenerating}
                 onClick={() => void printPdf().catch(() => undefined)}

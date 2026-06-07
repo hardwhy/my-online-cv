@@ -1,6 +1,6 @@
 import { FormEvent, useRef, useState } from 'react';
 import { PageTransition } from '../components/PageTransition';
-import { Section } from '../components/Section';
+import { Section } from '@web-cv/shared-ui';
 import { Seo } from '../components/Seo';
 import { useProfile } from '../hooks/usePortfolioContent';
 

@@ -90,7 +90,7 @@ export function LoginPage() {
             </label>
             {error ? <p className="rounded-xl border border-red-400/30 bg-red-400/10 p-3 text-sm text-red-100">{error}</p> : null}
             <button
-              className="w-full rounded-xl bg-brand-400 px-4 py-3 text-sm font-bold text-slate-950 transition hover:bg-brand-300 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full btn-primary"
               type="submit"
               disabled={isSubmitting}
             >

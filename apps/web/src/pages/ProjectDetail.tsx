@@ -1,7 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { PageTransition } from '../components/PageTransition';
 import { ProjectVisual } from '../components/ProjectVisual';
-import { Section } from '../components/Section';
+import { Section } from '@web-cv/shared-ui';
 import { Seo } from '../components/Seo';
 import { useProject } from '../hooks/usePortfolioContent';
 import { getProjectThumbnailUrl } from '../lib/storage';

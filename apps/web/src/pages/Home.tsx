@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PageTransition } from '../components/PageTransition';
 import { ProjectCard } from '../components/ProjectCard';
-import { Section } from '../components/Section';
+import { Section } from '@web-cv/shared-ui';
 import { Seo } from '../components/Seo';
 import { DownloadCvButton } from '../components/DownloadCvButton';
 import { useAchievements, useProfile, useProjects, useTestimonials } from '../hooks/usePortfolioContent';

@@ -79,7 +79,7 @@ export function PdfPreviewDialog({
           </div>
           <div className="flex flex-wrap gap-2">
             <button
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition hover:border-brand-300 hover:text-brand-700 disabled:opacity-50 dark:border-slate-700 dark:text-slate-200"
+              className="btn-icon-secondary"
               type="button"
               disabled={isLoading}
               onClick={onRetry}
@@ -89,10 +89,10 @@ export function PdfPreviewDialog({
             </button>
             {onUpload && (
               <button
-                className={`flex h-10 w-10 items-center justify-center rounded-full border transition disabled:opacity-50 ${
+                className={`btn-icon-secondary ${
                   uploadStatus === 'success'
-                    ? 'border-emerald-300 text-emerald-600 dark:border-emerald-700 dark:text-emerald-400'
-                    : 'border-slate-300 text-slate-700 hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:text-slate-200'
+                    ? '!border-emerald-300 !text-emerald-600 dark:!border-emerald-700 dark:!text-emerald-400'
+                    : ''
                 }`}
                 type="button"
                 disabled={isUploading || isLoading || !blob}
@@ -131,7 +131,7 @@ export function PdfPreviewDialog({
               </button>
             )}
             <button
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-red-200 text-red-600 transition hover:bg-red-50 dark:border-red-900/50 dark:text-red-400 dark:hover:bg-red-900/20"
+              className="btn-icon-danger"
               type="button"
               onClick={onClose}
               title="Close"

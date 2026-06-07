@@ -1,5 +1,5 @@
 import { PageTransition } from '../components/PageTransition';
-import { Section } from '../components/Section';
+import { Section } from '@web-cv/shared-ui';
 import { Seo } from '../components/Seo';
 import { useBlogPosts } from '../hooks/usePortfolioContent';
 
