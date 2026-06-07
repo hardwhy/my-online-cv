@@ -2,11 +2,10 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useProfile, useSocialLinks } from '../hooks/usePortfolioContent';
-import { useTheme } from '../hooks/useTheme';
+import { useTheme, ThemeToggle } from '@web-cv/shared-ui';
 import { getProfilePhotoUrl } from '../lib/storage';
 import { Analytics } from './Analytics';
 import { CommandPalette } from './CommandPalette';
-import { ThemeToggle } from './ThemeToggle';
 
 const navItems = [
   { label: 'Home', to: '/' },

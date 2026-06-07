@@ -1,13 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@import '../../../packages/shared-ui/src/styles/base.css';
 
 html {
   scroll-behavior: smooth;
@@ -16,19 +7,4 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-}
-
-::selection {
-  background: #67e8f9;
-  color: #0f172a;
-}
-
-@layer components {
-  .btn-primary {
-    @apply inline-flex items-center justify-center rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 dark:bg-white dark:text-slate-950 dark:hover:bg-brand-200 dark:focus:ring-offset-slate-950;
-  }
-
-  .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-brand-400 dark:hover:text-brand-200 dark:focus:ring-offset-slate-950;
-  }
 }

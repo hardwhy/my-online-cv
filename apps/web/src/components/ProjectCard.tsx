@@ -68,16 +68,16 @@ export function ProjectCard({ project }: ProjectCardProps) {
           ))}
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link to={detailPath} className="rounded-full bg-slate-950 px-4 py-2 text-sm font-bold text-white transition hover:bg-brand-700 dark:bg-white dark:text-slate-950 dark:hover:bg-brand-200">
+          <Link to={detailPath} className="btn-primary">
             Details
           </Link>
           {project.githubUrl !== '#' && (
-            <a href={project.githubUrl} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-brand-400 dark:hover:text-brand-200">
+            <a href={project.githubUrl} target="_blank" rel="noreferrer" className="btn-secondary">
               GitHub
             </a>
           )}
           {project.liveUrl !== '#' && (
-            <a href={project.liveUrl} target="_blank" rel="noreferrer" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-brand-400 dark:hover:text-brand-200">
+            <a href={project.liveUrl} target="_blank" rel="noreferrer" className="btn-secondary">
               Reference
             </a>
           )}
