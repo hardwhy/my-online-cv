@@ -47,9 +47,9 @@ Welcome to my professional corner of the internet! 🌐 This repository contains
 
 This is a monorepo powered by **Nx**!
 
-- **[apps/web](file:///Users/nb-dk-0614/Documents/Personal Space/web-cv/apps/web)**: The public-facing portfolio website. 🌐
-- **[apps/admin](file:///Users/nb-dk-0614/Documents/Personal Space/web-cv/apps/admin)**: The internal dashboard for managing content. 🛠️
-- **[packages/](file:///Users/nb-dk-0614/Documents/Personal Space/web-cv/packages)**: Shared logic and UI components used by both apps. 📦
+- **[apps/web](https://github.com/hardwhy/my-online-cv/apps/web)**: The public-facing portfolio website. 🌐
+- **[apps/admin](https://github.com/hardwhy/my-online-cv/apps/admin)**: The internal dashboard for managing content. 🛠️
+- **[packages/](https://github.com/hardwhy/my-online-cv/tree/main/packages)**: Shared logic and UI components used by both apps. 📦
 
 > **Note:** The backend PDF generation service has moved! Check out the [web-cv-services](https://github.com/your-username/web-cv-services) repository for the backend logic. 🚀
 
