@@ -1,4 +1,4 @@
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { PageTransition } from '../components/PageTransition';
 import { ProjectVisual } from '../components/ProjectVisual';
 import { Section } from '@web-cv/shared-ui';
@@ -7,16 +7,19 @@ import { useProject } from '../hooks/usePortfolioContent';
 import { getProjectThumbnailUrl } from '../lib/storage';
 
 function BackButton() {
+  const navigate = useNavigate();
+
   return (
-    <Link
-      to="/projects"
-      aria-label="Back to projects"
+    <button
+      type="button"
+      aria-label="Go back"
+      onClick={() => navigate(-1)}
       className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white p-1.5 text-slate-500 shadow-sm transition hover:-translate-x-0.5 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 dark:hover:text-brand-300"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4" aria-hidden="true">
         <path fillRule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" />
       </svg>
-    </Link>
+    </button>
   );
 }
 
