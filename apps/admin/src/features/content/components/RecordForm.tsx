@@ -14,7 +14,6 @@ import {
 } from '../utils';
 import { ArrayField } from './ArrayField';
 import { AssetField } from './AssetField';
-import { ImagePreviewOverlay } from './ImagePreviewOverlay';
 import { StructuredListField } from './StructuredListField';
 
 const getStorageTarget = (kind: StorageTargetKind): StorageUploadTarget | undefined =>
@@ -101,19 +100,6 @@ export function RecordForm({
   useEffect(() => {
     onDirtyChange?.(isDirty);
   }, [isDirty, onDirtyChange]);
-
-  // When parent passes an external action (e.g. row click), show confirm if dirty
-  useEffect(() => {
-    if (!pendingExternalAction) return;
-    if (isDirty) {
-      setPendingAction(() => pendingExternalAction);
-      setShowCancelConfirm(true);
-    } else {
-      pendingExternalAction();
-      onExternalActionConsumed?.();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pendingExternalAction]);
 
   const projectSlug = typeof formState.slug === 'string' ? formState.slug : '';
   const certificateSlug = slugify(
@@ -207,6 +193,8 @@ export function RecordForm({
   /** Expose guardedAction so parent can intercept table clicks etc */
   // (parent passes down a callback ref pattern via onCancel wrapper)
   const handleCancel = () => guardedAction(onCancel);
+  const activePendingAction = pendingExternalAction ?? pendingAction;
+  const showUnsavedConfirm = showCancelConfirm || Boolean(pendingExternalAction);
 
   const commonClasses =
     'mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-950 outline-none transition focus:border-brand-400 dark:border-slate-700 dark:bg-slate-950 dark:text-white';
@@ -402,13 +390,13 @@ export function RecordForm({
         </button>
       </form>
 
-      {showCancelConfirm && (
+      {showUnsavedConfirm && (
         <ConfirmModal
           message="You have unsaved changes. If you leave now they will be lost."
           confirmLabel="Discard changes"
           onConfirm={() => {
             setShowCancelConfirm(false);
-            pendingAction?.();
+            activePendingAction?.();
             setPendingAction(null);
             onExternalActionConsumed?.();
           }}

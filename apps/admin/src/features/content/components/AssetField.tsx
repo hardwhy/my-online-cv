@@ -2,8 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { StorageUploadTarget } from '@web-cv-services/shared-types';
 import type { PendingAssetChange } from '../types';
 import { ImagePreviewOverlay } from './ImagePreviewOverlay';
-import { adminSupabase } from '../../../lib/supabase';
-import { resolveStoragePath } from '@web-cv-services/shared-services';
+import { getPublicAssetUrl } from './assetUrls';
 
 function PlaceholderImage({ label = 'No image' }: { label?: string }) {
   return (
@@ -66,15 +65,6 @@ function ConfirmModal({
   );
 }
 
-export const getPublicAssetUrl = (target: StorageUploadTarget, slug?: string): string | undefined => {
-  try {
-    const path = resolveStoragePath(target, slug);
-    return adminSupabase?.storage.from(target.bucket).getPublicUrl(path).data.publicUrl;
-  } catch {
-    return undefined;
-  }
-};
-
 export function AssetField({
   target,
   slug,
@@ -91,6 +81,7 @@ export function AssetField({
   const [imageError, setImageError] = useState(false);
   const [previewOverlayUrl, setPreviewOverlayUrl] = useState<string | null>(null);
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
+  const [dailyCacheBuster] = useState(() => Math.floor(Date.now() / (1000 * 60 * 60 * 24)));
   // Use a ref-based approach: cacheBuster starts at 0 (meaning "use current time"),
   // then gets bumped to a fresh timestamp after each successful upload.
   const [cacheBuster, setCacheBuster] = useState(0);
@@ -115,7 +106,7 @@ export function AssetField({
   // so repeated opens of the edit form always show the latest image without a stale
   // cached version. After a successful save the buster is set to a fresh second-precision
   // timestamp which forces an immediate reload.
-  const effectiveBuster = cacheBuster === 0 ? Math.floor(Date.now() / (1000 * 60 * 60 * 24)) : cacheBuster;
+  const effectiveBuster = cacheBuster === 0 ? dailyCacheBuster : cacheBuster;
   const previewUrl = publicUrl ? `${publicUrl}${publicUrl.includes('?') ? '&' : '?'}v=${effectiveBuster}` : undefined;
 
   const selectedPreviewUrl = useMemo(

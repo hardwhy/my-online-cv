@@ -1,5 +1,6 @@
 import { KeyboardEvent, ReactNode, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { menuItemClasses, menuPanelClasses } from './adminDropdownStyles';
 
 export type DropdownOption = {
   value: string;
@@ -9,14 +10,6 @@ export type DropdownOption = {
 
 const triggerClasses =
   'w-full rounded-xl border border-slate-200 bg-slate-100 px-4 py-2 text-left text-sm font-semibold text-slate-700 outline-none transition hover:text-slate-950 focus:border-brand-400 focus:ring-2 focus:ring-brand-400/20 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:text-white';
-
-const panelClasses =
-  'z-50 overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 shadow-soft dark:border-slate-800 dark:bg-slate-950';
-
-const itemClasses =
-  'flex w-full items-start justify-between gap-3 rounded-xl px-3 py-2 text-left text-sm font-semibold transition';
-
-export { panelClasses as menuPanelClasses, itemClasses as menuItemClasses };
 
 function Chevron({ isOpen }: { isOpen: boolean }) {
   return (
@@ -198,7 +191,7 @@ export function AdminSelect({
 
         {isOpen
           ? createPortal(
-          <div ref={panelRef} className={`${panelClasses} fixed`} style={{ top: position.top, left: position.left, width: position.width }}>
+          <div ref={panelRef} className={`${menuPanelClasses} fixed`} style={{ top: position.top, left: position.left, width: position.width }}>
             {searchable ? (
               <div className="border-b border-slate-200 p-2 dark:border-slate-800">
                 <input
@@ -226,7 +219,7 @@ export function AdminSelect({
                   <button
                     key={option.value}
                     id={`${id}-option-${option.value}`}
-                    className={`${itemClasses} ${
+                    className={`${menuItemClasses} ${
                       isSelected
                         ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950'
                         : isActive
@@ -310,7 +303,7 @@ export function AdminMenu({
       window.removeEventListener('scroll', closeOnViewportChange, true);
       window.removeEventListener('resize', closeOnViewportChange);
     };
-  }, [isOpen]);
+  }, [isOpen, items.length]);
 
   const selectItem = (item: MenuItem) => {
     item.onSelect();
@@ -371,7 +364,7 @@ export function AdminMenu({
         ? createPortal(
             <div
               ref={menuRef}
-              className={`${panelClasses} fixed w-44`}
+              className={`${menuPanelClasses} fixed w-44`}
               style={{ top: position.top, left: position.left }}
               role="menu"
               aria-label={label}
@@ -380,7 +373,7 @@ export function AdminMenu({
               {items.map((item, index) => (
                 <button
                   key={item.label}
-                  className={`${itemClasses} ${
+                  className={`${menuItemClasses} ${
                     index === activeIndex
                       ? item.tone === 'danger'
                         ? 'bg-red-50 text-red-600 dark:bg-red-400/10 dark:text-red-200'

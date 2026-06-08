@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { AdminRecord, AdminTableConfig, StorageUploadTarget } from '@web-cv-services/shared-types';
 import { storageUploadTargets } from '@web-cv-services/shared-services';
-import { getPublicAssetUrl } from './AssetField';
+import { getPublicAssetUrl } from './assetUrls';
 import { getProjectFallbackImage, isProjectTerminalFallback } from '../utils';
 
 function PlaceholderImage({ label = 'No image' }: { label?: string }) {
@@ -40,7 +40,7 @@ function TerminalFallbackThumb() {
 const getStorageTarget = (kind: StorageUploadTarget['kind']) =>
   storageUploadTargets.find((t) => t.kind === kind);
 
-export const getRecordThumbnailUrl = (config: AdminTableConfig, record: AdminRecord, cacheBuster?: number): string | undefined => {
+const getRecordThumbnailUrl = (config: AdminTableConfig, record: AdminRecord, cacheBuster?: number): string | undefined => {
   if (config.name === 'projects') {
     const target = getStorageTarget('project-thumbnail');
     const base = target ? getPublicAssetUrl(target, String(record.slug ?? '')) : undefined;

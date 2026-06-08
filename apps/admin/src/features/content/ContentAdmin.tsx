@@ -9,8 +9,9 @@ import {
   listAdminRecords,
   updateAdminRecord,
 } from '@web-cv-services/shared-services';
-import type { AdminFieldConfig, AdminRecord, AdminRecordValue, AdminTableConfig } from '@web-cv-services/shared-types';
-import { AdminMenu, AdminSelect, MoreIcon, menuPanelClasses, menuItemClasses } from '../../components/AdminDropdown';
+import type { AdminFieldConfig, AdminRecord, AdminRecordValue } from '@web-cv-services/shared-types';
+import { AdminMenu, AdminSelect, MoreIcon } from '../../components/AdminDropdown';
+import { menuItemClasses, menuPanelClasses } from '../../components/adminDropdownStyles';
 import { adminSupabase } from '../../lib/supabase';
 import { createDuplicateRecordPayload, displayValue, formatAdminDate } from './utils';
 import { RecordForm } from './components/RecordForm';
@@ -38,9 +39,6 @@ type ContextMenuState = {
   y: number;
   record: AdminRecord;
 };
-
-const panelClasses = menuPanelClasses;
-const itemClasses = menuItemClasses;
 
 function RowContextMenu({
   state,
@@ -84,14 +82,14 @@ function RowContextMenu({
   return createPortal(
     <div
       ref={menuRef}
-      className={`${panelClasses} fixed w-44`}
+      className={`${menuPanelClasses} fixed w-44`}
       style={{ top: pos.top, left: pos.left }}
       role="menu"
     >
       {items.map((item, index) => (
         <button
           key={item.label}
-          className={`${itemClasses} ${
+          className={`${menuItemClasses} ${
             index === activeIndex
               ? item.tone === 'danger'
                 ? 'bg-red-50 text-red-600 dark:bg-red-400/10 dark:text-red-200'
@@ -221,7 +219,7 @@ export function ContentAdmin() {
       if (nextIsPublished && saved.id) await draftOtherProfiles(String(saved.id));
       return saved;
     },
-    onSuccess: async (_, __, context) => {
+    onSuccess: async () => {
       // Bust thumbnail for the saved record
       const recordId = String(editingRecord?.id ?? 'new');
       setThumbnailBusters((prev) => ({ ...prev, [recordId]: Math.floor(Date.now() / 1000) }));
