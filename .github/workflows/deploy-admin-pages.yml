@@ -33,6 +33,7 @@ jobs:
       VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
       VITE_DEFAULT_CV_TEMPLATE: ${{ vars.VITE_DEFAULT_CV_TEMPLATE }}
       VITE_PDF_API_URL: ${{ vars.VITE_PDF_API_URL }}
+      VITE_WEB_URL: ${{vars.VITE_WEB_URL}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
