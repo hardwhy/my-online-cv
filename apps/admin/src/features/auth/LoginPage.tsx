@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { isSupabaseConfigured } from '../../lib/supabase';
 import { useAuth } from './authContext';
+import { useTheme, ThemeToggle } from '@web-cv/shared-ui';
 
 type LocationState = {
   from?: {
@@ -19,6 +20,7 @@ export function LoginPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   if (session) return <Navigate to={redirectTo} replace />;
 
@@ -37,42 +39,52 @@ export function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-10 font-sans text-slate-100 antialiased">
-      <section className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/90 p-8">
-        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-brand-300">Portfolio Admin</p>
-        <h1 className="mt-3 font-display text-3xl font-bold text-white">Sign in</h1>
-        <p className="mt-2 text-sm text-slate-400">Use your Supabase admin account. Access is enforced by RLS policies.</p>
+    <main className={`relative flex min-h-screen flex-col items-center justify-center px-4 py-10 font-sans antialiased transition-colors ${theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-100 text-slate-900'}`}>
+      {/* Theme toggle — top right */}
+      <div className="absolute right-4 top-4">
+        <ThemeToggle theme={theme} onToggle={toggleTheme} />
+      </div>
+
+      <section className={`w-full max-w-md rounded-3xl border p-8 ${theme === 'dark' ? 'border-slate-800 bg-slate-900/90' : 'border-slate-200 bg-white shadow-soft'}`}>
+        <p className={`text-sm font-semibold uppercase tracking-[0.3em] ${theme === 'dark' ? 'text-brand-300' : 'text-brand-700'}`}>Portfolio Admin</p>
+        <h1 className={`mt-3 font-display text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-950'}`}>Sign in</h1>
+        <p className={`mt-2 text-sm ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+          Use your Supabase admin account. Access is enforced by RLS policies.
+        </p>
 
         {!isSupabaseConfigured ? (
-          <div className="mt-6 rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4 text-sm text-amber-100">
-            Missing `VITE_SUPABASE_URL` or `VITE_SUPABASE_ANON_KEY`. Add them before using the admin portal.
+          <div className="mt-6 rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4 text-sm text-amber-700 dark:text-amber-100">
+            Missing <code>VITE_SUPABASE_URL</code> or <code>VITE_SUPABASE_ANON_KEY</code>. Add them before
+            using the admin portal.
           </div>
         ) : (
           <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
-            <label className="block text-sm font-medium text-slate-200">
+            <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-slate-200' : 'text-slate-700'}`}>
               Email
               <input
-                className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-brand-300"
+                className={`mt-2 w-full rounded-xl border px-4 py-3 outline-none transition ${theme === 'dark' ? 'border-slate-700 bg-slate-950 text-white focus:border-brand-300' : 'border-slate-300 bg-white text-slate-950 focus:border-brand-500'}`}
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
+                autoComplete="email"
               />
             </label>
-            <label className="block text-sm font-medium text-slate-200">
+            <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-slate-200' : 'text-slate-700'}`}>
               Password
               <span className="relative mt-2 block">
                 <input
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 pr-12 text-white outline-none transition focus:border-brand-300"
+                  className={`w-full rounded-xl border px-4 py-3 pr-12 outline-none transition ${theme === 'dark' ? 'border-slate-700 bg-slate-950 text-white focus:border-brand-300' : 'border-slate-300 bg-white text-slate-950 focus:border-brand-500'}`}
                   type={isPasswordVisible ? 'text' : 'password'}
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   required
+                  autoComplete="current-password"
                 />
                 <button
-                  className="absolute inset-y-0 right-3 my-auto flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-800 hover:text-white"
+                  className={`absolute inset-y-0 right-3 my-auto flex h-8 w-8 items-center justify-center rounded-full transition ${theme === 'dark' ? 'text-slate-400 hover:bg-slate-800 hover:text-white' : 'text-slate-400 hover:bg-slate-100 hover:text-slate-700'}`}
                   type="button"
-                  onClick={() => setIsPasswordVisible((isVisible) => !isVisible)}
+                  onClick={() => setIsPasswordVisible((v) => !v)}
                   aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
                 >
                   {isPasswordVisible ? (
@@ -88,17 +100,22 @@ export function LoginPage() {
                 </button>
               </span>
             </label>
-            {error ? <p className="rounded-xl border border-red-400/30 bg-red-400/10 p-3 text-sm text-red-100">{error}</p> : null}
-            <button
-              className="w-full btn-primary"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Signing in...' : 'Sign in'}
+            {error ? (
+              <p className="rounded-xl border border-red-400/30 bg-red-400/10 p-3 text-sm text-red-100">
+                {error}
+              </p>
+            ) : null}
+            <button className="w-full btn-primary" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Signing in…' : 'Sign in'}
             </button>
           </form>
         )}
       </section>
+
+      {/* Footer */}
+      <footer className={`mt-8 text-center text-xs ${theme === 'dark' ? 'text-slate-500' : 'text-slate-400'}`}>
+        &copy; {new Date().getFullYear()} Ayi Hardiyanto. All rights reserved.
+      </footer>
     </main>
   );
 }

@@ -16,6 +16,8 @@ const panelClasses =
 const itemClasses =
   'flex w-full items-start justify-between gap-3 rounded-xl px-3 py-2 text-left text-sm font-semibold transition';
 
+export { panelClasses as menuPanelClasses, itemClasses as menuItemClasses };
+
 function Chevron({ isOpen }: { isOpen: boolean }) {
   return (
     <svg className={`h-4 w-4 shrink-0 text-slate-400 transition ${isOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -283,8 +285,13 @@ export function AdminMenu({
 
     const trigger = triggerRef.current?.getBoundingClientRect();
     if (trigger) {
+      // Estimate menu height: 4 items × 36px + 16px padding ≈ 160px max
+      const estimatedMenuHeight = items.length * 36 + 16;
+      const spaceBelow = window.innerHeight - trigger.bottom;
+      const shouldFlipUp = spaceBelow < estimatedMenuHeight + 16 && trigger.top > estimatedMenuHeight;
+
       setPosition({
-        top: trigger.bottom + 8,
+        top: shouldFlipUp ? trigger.top - estimatedMenuHeight - 8 : trigger.bottom + 8,
         left: Math.max(12, trigger.right - 176),
       });
     }
