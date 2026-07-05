@@ -1,5 +1,5 @@
-import type { AdminFieldConfig, AdminRecord, AdminRecordValue, AdminTableConfig } from '@web-cv-services/shared-types';
-import type { FormState, ProjectVisualKind, StructuredItem } from './types';
+import type { AdminFieldConfig, AdminRecord, AdminRecordValue, AdminTableConfig, ProjectCategory } from '@web-cv-services/shared-types';
+import type { FormState, StructuredItem } from './types';
 
 export const localAssetPath = (filename: string) => `${import.meta.env.BASE_URL}assets/${filename}`;
 
@@ -151,24 +151,15 @@ export const createDuplicateRecordPayload = (
   return payload;
 };
 
-export const getProjectVisualKind = (record: AdminRecord): ProjectVisualKind => {
-  const category = String(record.category ?? '').toLowerCase();
-  const technologies = Array.isArray(record.technologies) ? record.technologies.join(' ').toLowerCase() : '';
-
-  if (category === 'mobile' || /android|ios|flutter|dart/.test(technologies)) return 'mobile';
-  if (
-    category === 'platform' ||
-    /backend|api|cli|terminal|java|maven|docker|jenkins|express|node|python|nx/.test(technologies)
-  )
-    return 'terminal';
-  return 'web';
+export const getProjectVisualKind = (record: AdminRecord): ProjectCategory => {
+  return record.category as ProjectCategory;
 };
 
-export const isProjectTerminalFallback = (record: AdminRecord) => getProjectVisualKind(record) === 'terminal';
+export const isProjectTerminalFallback = (record: AdminRecord) => getProjectVisualKind(record) === 'Platform';
 
 export const getProjectFallbackImage = (record: AdminRecord) => {
   const kind = getProjectVisualKind(record);
-  if (kind === 'mobile') return localAssetPath('fallback-mobile-platforms.png');
-  if (kind === 'web') return localAssetPath('fallback-web-react-typescript.png');
+  if (kind === 'Mobile') return localAssetPath('fallback-mobile-platforms.png');
+  if (kind === 'Web App') return localAssetPath('fallback-web-react-typescript.png');
   return undefined;
 };

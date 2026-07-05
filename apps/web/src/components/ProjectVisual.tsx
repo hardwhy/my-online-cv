@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Project } from '../types/content';
+import type { Project, ProjectCategory } from '../types/content';
 
 type ProjectVisualProps = {
   project: Project;
@@ -8,22 +8,11 @@ type ProjectVisualProps = {
   imageClassName?: string;
 };
 
-type VisualKind = 'mobile' | 'web' | 'terminal';
 
 const assetPath = (filename: string) => `${import.meta.env.BASE_URL}assets/${filename}`;
 
-const getVisualKind = (project: Project): VisualKind => {
-  const technologies = project.technologies.join(' ').toLowerCase();
-
-  if (project.category === 'Mobile' || /android|ios|flutter|dart/.test(technologies)) {
-    return 'mobile';
-  }
-
-  if (project.category === 'Platform' || /backend|api|cli|terminal|java|maven|docker|jenkins|express|node|python|nx/.test(technologies)) {
-    return 'terminal';
-  }
-
-  return 'web';
+const getVisualKind = (project: Project): ProjectCategory => {
+  return project.category;
 };
 
 function MobileFallback() {
@@ -81,9 +70,9 @@ export function ProjectVisual({ project, imageSrc, className = '', imageClassNam
 
   return (
     <div className={className} aria-label={`${project.title} fallback preview`} role="img">
-      {kind === 'mobile' && <MobileFallback />}
-      {kind === 'web' && <WebFallback />}
-      {kind === 'terminal' && <TerminalFallback />}
+      {kind === 'Mobile' && <MobileFallback />}
+      {kind === 'Web App' && <WebFallback />}
+      {kind === 'Platform' && <TerminalFallback />}
     </div>
   );
 }

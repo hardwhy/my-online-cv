@@ -6,8 +6,6 @@ export type StructuredItem = {
 
 export type FormState = Record<string, string | boolean | string[] | StructuredItem[]>;
 
-export type ProjectVisualKind = 'mobile' | 'web' | 'terminal';
-
 export type PendingAssetChange = {
   file?: File;
   remove?: boolean;
